@@ -36,7 +36,7 @@
       gap: 16px;
     }
 
-    /* CREDENCIAL OFICIAL (SOLO LA IMAGEN DEL CARNET) */
+    /* CREDENCIAL OFICIAL (FONDO CARNET) */
     .carnet-wrapper {
       width: 100%;
       border-radius: 18px;
@@ -117,7 +117,7 @@
       display: none;
     }
 
-    /* SECCIONES DE DOCUMENTOS */
+    /* SECCIONES Y BOTONES */
     .section-title {
       font-size: 12px;
       color: var(--gold-light);
@@ -154,6 +154,8 @@
       text-decoration: none;
       cursor: pointer;
       transition: all 0.2s ease;
+      width: 100%;
+      text-align: left;
     }
 
     .doc-item:hover, .doc-item:active {
@@ -165,6 +167,13 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      overflow: hidden;
+    }
+
+    .doc-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .badge-tipo {
@@ -172,6 +181,7 @@
       padding: 2px 6px;
       border-radius: 4px;
       font-weight: 700;
+      flex-shrink: 0;
     }
 
     .badge-img {
@@ -187,6 +197,8 @@
     .doc-arrow {
       color: var(--gold);
       font-size: 16px;
+      margin-left: 8px;
+      flex-shrink: 0;
     }
 
     .hidden {
@@ -254,12 +266,12 @@
 
 <div class="container">
 
-  <!-- SOLO LA IMAGEN DE TU CARNET -->
+  <!-- CREDENCIAL OFICIAL -->
   <div class="carnet-wrapper">
     <img src="fondo-carnet.png" alt="Credencial Trascendiendo Fronteras" class="carnet-bg">
   </div>
 
-  <!-- PANEL CARPETA VIRTUAL -->
+  <!-- PANEL DE LA CARPETA VIRTUAL -->
   <div class="panel">
     
     <!-- Bloque PIN -->
@@ -275,14 +287,14 @@
     <!-- Lista de Archivos -->
     <div id="docsView" class="hidden">
       
-      <!-- IMÁGENES: CÉDULA Y PASAPORTE -->
+      <!-- 1. IDENTIDAD (IMÁGENES) -->
       <div class="section-title">Documentos de Identidad (Imagen)</div>
       <div class="docs-list">
 
         <button class="doc-item" onclick="abrirVisor('Cédula de Ciudadanía', 'cedula.jpg')">
           <div class="doc-left">
             <span>🪪</span>
-            <span>Cédula de Ciudadanía</span>
+            <span class="doc-title">Cédula de Ciudadanía</span>
             <span class="badge-tipo badge-img">FOTO</span>
           </div>
           <span class="doc-arrow">›</span>
@@ -291,7 +303,7 @@
         <button class="doc-item" onclick="abrirVisor('Pasaporte Vigente', 'pasaporte.jpg')">
           <div class="doc-left">
             <span>✈️</span>
-            <span>Pasaporte Oficial</span>
+            <span class="doc-title">Pasaporte Oficial</span>
             <span class="badge-tipo badge-img">FOTO</span>
           </div>
           <span class="doc-arrow">›</span>
@@ -299,23 +311,71 @@
 
       </div>
 
-      <!-- PDFs: PARTICIPACIONES, NDA, CIS, W8, DDR -->
-      <div class="section-title">Expediente Oficial (Archivos PDF)</div>
+      <!-- 2. PARTICIPACIONES - VOUCHERS (IMÁGENES) -->
+      <div class="section-title">Participaciones - Vouchers (Imagen)</div>
       <div class="docs-list">
 
-        <a href="participaciones.pdf" target="_blank" class="doc-item">
+        <button class="doc-item" onclick="abrirVisor('Voucher Participación 1', 'voucher-1.jpg')">
           <div class="doc-left">
-            <span>🏅</span>
-            <span>Participaciones</span>
-            <span class="badge-tipo badge-pdf">PDF</span>
+            <span>🧾</span>
+            <span class="doc-title">Voucher Participación N° 1</span>
+            <span class="badge-tipo badge-img">FOTO</span>
           </div>
           <span class="doc-arrow">›</span>
-        </a>
+        </button>
+
+        <button class="doc-item" onclick="abrirVisor('Voucher Participación 2', 'voucher-2.jpg')">
+          <div class="doc-left">
+            <span>🧾</span>
+            <span class="doc-title">Voucher Participación N° 2</span>
+            <span class="badge-tipo badge-img">FOTO</span>
+          </div>
+          <span class="doc-arrow">›</span>
+        </button>
+
+        <button class="doc-item" onclick="abrirVisor('Voucher Participación 3', 'voucher-3.jpg')">
+          <div class="doc-left">
+            <span>🧾</span>
+            <span class="doc-title">Voucher Participación N° 3</span>
+            <span class="badge-tipo badge-img">FOTO</span>
+          </div>
+          <span class="doc-arrow">›</span>
+        </button>
+
+      </div>
+
+      <!-- 3. PARTICIPACIONES - CONTRARECIBOS (IMÁGENES) -->
+      <div class="section-title">Participaciones - Contrarecibos (Imagen)</div>
+      <div class="docs-list">
+
+        <button class="doc-item" onclick="abrirVisor('Contrarecibo Oficial 1', 'contrarecibo-1.jpg')">
+          <div class="doc-left">
+            <span>📑</span>
+            <span class="doc-title">Contrarecibo Oficial N° 1</span>
+            <span class="badge-tipo badge-img">FOTO</span>
+          </div>
+          <span class="doc-arrow">›</span>
+        </button>
+
+        <button class="doc-item" onclick="abrirVisor('Contrarecibo Oficial 2', 'contrarecibo-2.jpg')">
+          <div class="doc-left">
+            <span>📑</span>
+            <span class="doc-title">Contrarecibo Oficial N° 2</span>
+            <span class="badge-tipo badge-img">FOTO</span>
+          </div>
+          <span class="doc-arrow">›</span>
+        </button>
+
+      </div>
+
+      <!-- 4. EXPEDIENTE OFICIAL (ARCHIVOS PDF) -->
+      <div class="section-title">Expediente Oficial (Archivos PDF)</div>
+      <div class="docs-list">
 
         <a href="nda.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
             <span>📜</span>
-            <span>Acuerdo NDA (Confidencialidad)</span>
+            <span class="doc-title">Acuerdo NDA (Confidencialidad)</span>
             <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
@@ -324,7 +384,7 @@
         <a href="cis.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
             <span>🛡️</span>
-            <span>CIS</span>
+            <span class="doc-title">Estándares y Ficha CIS</span>
             <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
@@ -333,7 +393,7 @@
         <a href="w8.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
             <span>📑</span>
-            <span>Formulario W-8BEN</span>
+            <span class="doc-title">Formulario W-8BEN</span>
             <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
@@ -342,7 +402,7 @@
         <a href="ddr.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
             <span>💼</span>
-            <span>Reporte DDR (Due Diligence)</span>
+            <span class="doc-title">Reporte DDR (Due Diligence)</span>
             <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
@@ -369,7 +429,7 @@
 
 <script>
   // PIN de seguridad
-  const PIN_SISTEMA = "1234";
+  const PIN_SISTEMA = "4826";
 
   function validarPIN() {
     const input = document.getElementById("pinInput").value;
@@ -400,4 +460,4 @@
 </script>
 
 </body>
-</html>  
+</html>
