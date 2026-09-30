@@ -319,7 +319,7 @@
     <div id="docsView" class="hidden">
       
       <!-- 1. IDENTIDAD (IMÁGENES) -->
-      <div class="section-title">Documentos de Identidad (Imagen)</div>
+      <div class="section-title">Documentos de Identidad</div>
       <div class="docs-list">
 
         <button class="doc-item" onclick="abrirVisor('Cédula de Ciudadanía', 'cedula.jpg')">
@@ -342,8 +342,8 @@
 
       </div>
 
-      <!-- 2. PARTICIPACIONES Y CONTRATOS (PDFs MULTIPÁGINA) -->
-      <div class="section-title" id="secParticipacionesTitulo">Participaciones y Soportes (PDF)</div>
+      <!-- 2. PARTICIPACIONES(PDFs MULTIPÁGINA) -->
+      <div class="section-title" id="secParticipacionesTitulo">Participaciones</div>
       <div class="docs-list">
 
         <!-- Cuadernillo Vouchers -->
@@ -379,7 +379,7 @@
       </div>
 
       <!-- 3. DOCUMENTOS LEGALES (ARCHIVOS PDF) -->
-      <div class="section-title">Expediente Legal Oficial (PDF)</div>
+      <div class="section-title">Documentos Legales</div>
       <div class="docs-list">
 
         <a href="nda.pdf" target="_blank" class="doc-item">
@@ -422,7 +422,7 @@
 
       <!-- BOTÓN PARA GENERAR REPORTE COMPLETO -->
       <button class="btn-reporte" onclick="generarReporte()">
-        <span>📥</span> Descargar Reporte Maestro Interactivo (PDF)
+        <span>📥</span> Descargar Reporte(PDF)
       </button>
 
       <div class="legal-note">
@@ -536,13 +536,13 @@
     const listaDocumentos = [
       { nombre: "Cédula de Ciudadanía (Soporte biométrico)", archivo: "cedula.jpg", tipo: "IMAGEN", visible: true },
       { nombre: "Pasaporte Oficial Vigente", archivo: "pasaporte.jpg", tipo: "IMAGEN", visible: true },
-      { nombre: "Expediente de Vouchers de Participación", archivo: "vouchers.pdf", tipo: "PDF", visible: DOCUMENTOS_ACTIVOS.tieneVouchers },
-      { nombre: "Expediente de Contrarecibos Oficiales", archivo: "contrarecibos.pdf", tipo: "PDF", visible: DOCUMENTOS_ACTIVOS.tieneContrarecibos },
-      { nombre: "Contratos y Acuerdos de Participación", archivo: "contratos.pdf", tipo: "PDF", visible: DOCUMENTOS_ACTIVOS.tieneContratos },
+      { nombre: "Vouchers de Participación", archivo: "vouchers.pdf", tipo: "PDF", visible: DOCUMENTOS_ACTIVOS.tieneVouchers },
+      { nombre: "Contrarecibos", archivo: "contrarecibos.pdf", tipo: "PDF", visible: DOCUMENTOS_ACTIVOS.tieneContrarecibos },
+      { nombre: "Contratos", archivo: "contratos.pdf", tipo: "PDF", visible: DOCUMENTOS_ACTIVOS.tieneContratos },
       { nombre: "Acuerdo de Confidencialidad (NDA)", archivo: "nda.pdf", tipo: "PDF", visible: true },
-      { nombre: "Ficha y Estándares de Cumplimiento (CIS)", archivo: "cis.pdf", tipo: "PDF", visible: true },
-      { nombre: "Declaración Tributaria W-8BEN", archivo: "w8.pdf", tipo: "PDF", visible: true },
-      { nombre: "Reporte de Diligencia Debida (DDR)", archivo: "ddr.pdf", tipo: "PDF", visible: true }
+      { nombre: "CIS", archivo: "cis.pdf", tipo: "PDF", visible: true },
+      { nombre: "W-8BEN", archivo: "w8.pdf", tipo: "PDF", visible: true },
+      { nombre: "DDR", archivo: "ddr.pdf", tipo: "PDF", visible: true }
     ];
 
     let filasTabla = '';
@@ -602,14 +602,14 @@
       </head>
       <body>
         <div class="top-bar">
-          <span class="top-bar-title">📄 REPORTE MAESTRO DE EXPEDIENTE</span>
+          <span class="top-bar-title">📄 REPORTE DE PARTICIPACIONES</span>
           <button class="btn-save-pdf" onclick="window.print()">📥 Descargar Reporte en PDF</button>
         </div>
         <div class="paper">
           <div class="header">
             <div>
               <h1>${DATOS_TITULAR.entidad}</h1>
-              <h2>REPORTE OFICIAL DE EXPEDIENTE Y DESCARGA DE ARCHIVOS</h2>
+              <h2>REPORTE OFICIAL Y DESCARGA DE ARCHIVOS</h2>
             </div>
             <div class="badge-status">${DATOS_TITULAR.estado}</div>
           </div>
@@ -634,13 +634,13 @@
           <div class="note-box">
             💡 <strong>Instrucciones:</strong> Este documento es un índice activo. Al abrir este reporte descargado en cualquier dispositivo o lector PDF, haga clic sobre el botón <strong>"Descargar Archivo"</strong> de cualquier soporte para descargarlo o abrirlo automáticamente en alta resolución desde el servidor seguro.
           </div>
-          <div class="sec-title">Soportes Custodiados y Enlaces Directos de Descarga:</div>
+          <div class="sec-title">Enlaces Directos de Descarga:</div>
           <table class="table-docs">
             <thead>
               <tr>
                 <th>Documento Oficial</th>
                 <th style="text-align: center;">Tipo</th>
-                <th style="text-align: center;">Acceso de Descarga</th>
+                <th style="text-align: center;">Botón de Descarga</th>
               </tr>
             </thead>
             <tbody>
