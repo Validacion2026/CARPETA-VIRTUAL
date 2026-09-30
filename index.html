@@ -441,7 +441,7 @@
   // PIN de seguridad
   const PIN_SISTEMA = "1234";
 
-  // CONFIGURACIÓN DE VISIBILIDAD
+  // CONFIGURACIÓN DE VISIBILIDAD (true: visible, false: oculto)
   const DOCUMENTOS_ACTIVOS = {
     tieneVouchers: true,
     tieneContrarecibos: true,
@@ -457,46 +457,65 @@
   };
 
   function aplicarConfiguracionDocumentos() {
-    if (!DOCUMENTOS_ACTIVOS.tieneVouchers) {
-      document.getElementById("btnVouchers").classList.add("hidden");
-    }
-    if (!DOCUMENTOS_ACTIVOS.tieneContrarecibos) {
-      document.getElementById("btnContrarecibos").classList.add("hidden");
-    }
-    if (!DOCUMENTOS_ACTIVOS.tieneContratos) {
-      document.getElementById("btnContratos").classList.add("hidden");
-    }
-    if (!DOCUMENTOS_ACTIVOS.tieneVouchers && !DOCUMENTOS_ACTIVOS.tieneContrarecibos && !DOCUMENTOS_ACTIVOS.tieneContratos) {
-      document.getElementById("secParticipacionesTitulo").classList.add("hidden");
+    const elVouchers = document.getElementById("btnVouchers");
+    const elContrarecibos = document.getElementById("btnContrarecibos");
+    const elContratos = document.getElementById("btnContratos");
+    const elTitulo = document.getElementById("secParticipacionesTitulo");
+
+    if (elVouchers && !DOCUMENTOS_ACTIVOS.tieneVouchers) elVouchers.classList.add("hidden");
+    if (elContrarecibos && !DOCUMENTOS_ACTIVOS.tieneContrarecibos) elContrarecibos.classList.add("hidden");
+    if (elContratos && !DOCUMENTOS_ACTIVOS.tieneContratos) elContratos.classList.add("hidden");
+
+    if (elTitulo && !DOCUMENTOS_ACTIVOS.tieneVouchers && !DOCUMENTOS_ACTIVOS.tieneContrarecibos && !DOCUMENTOS_ACTIVOS.tieneContratos) {
+      elTitulo.classList.add("hidden");
     }
   }
 
   function validarPIN() {
-    const input = document.getElementById("pinInput").value;
+    const input = document.getElementById("pinInput");
     const error = document.getElementById("errorText");
+    const pinIngresado = input ? input.value.trim() : "";
 
-    if (input === PIN_SISTEMA) {
-      document.getElementById("pinView").classList.add("hidden");
-      document.getElementById("docsView").classList.remove("hidden");
+    if (pinIngresado === PIN_SISTEMA) {
+      if (error) error.style.display = "none";
+      const pinView = document.getElementById("pinView");
+      const docsView = document.getElementById("docsView");
+
+      if (pinView) pinView.classList.add("hidden");
+      if (docsView) docsView.classList.remove("hidden");
       aplicarConfiguracionDocumentos();
     } else {
-      error.style.display = "block";
+      if (error) {
+        error.style.display = "block";
+        error.innerText = "PIN incorrecto. Intente de nuevo.";
+      }
     }
   }
 
   function abrirVisor(titulo, archivo) {
-    document.getElementById("modalTitulo").innerText = titulo;
-    document.getElementById("modalImg").src = archivo;
-    document.getElementById("modalVisor").classList.remove("hidden");
+    const elTitulo = document.getElementById("modalTitulo");
+    const elImg = document.getElementById("modalImg");
+    const modal = document.getElementById("modalVisor");
+
+    if (elTitulo) elTitulo.innerText = titulo;
+    if (elImg) elImg.src = archivo;
+    if (modal) modal.classList.remove("hidden");
   }
 
   function cerrarVisor() {
-    document.getElementById("modalVisor").classList.add("hidden");
-    document.getElementById("modalImg").src = "";
+    const modal = document.getElementById("modalVisor");
+    const elImg = document.getElementById("modalImg");
+    if (modal) modal.classList.add("hidden");
+    if (elImg) elImg.src = "";
   }
 
-  document.getElementById("pinInput").addEventListener("keyup", function(e) {
-    if (e.key === "Enter") validarPIN();
+  document.addEventListener("DOMContentLoaded", function() {
+    const inputPin = document.getElementById("pinInput");
+    if (inputPin) {
+      inputPin.addEventListener("keyup", function(e) {
+        if (e.key === "Enter") validarPIN();
+      });
+    }
   });
 
   // FUNCIÓN DEL REPORTE CON BOTONES PARA VER Y DESCARGAR
@@ -514,12 +533,12 @@
       { nombre: "Acuerdo de Confidencialidad (NDA)", archivo: "nda.pdf", tipo: "PDF", visible: true },
       { nombre: "CIS", archivo: "cis.pdf", tipo: "PDF", visible: true },
       { nombre: "W-8BEN", archivo: "w8.pdf", tipo: "PDF", visible: true },
-      { nombre: "DDR, archivo: "ddr.pdf", tipo: "PDF", visible: true }
+      { nombre: "Reporte DDR", archivo: "ddr.pdf", tipo: "PDF", visible: true }
     ];
 
     let filasHTML = '';
 
-    listaCompleta.forEach(doc => {
+    listaCompleta.forEach(function(doc) {
       if (doc.visible) {
         const urlArchivo = origenUrl + doc.archivo;
         filasHTML += `
@@ -623,8 +642,12 @@
     `;
 
     const ventana = window.open('', '_blank');
-    ventana.document.write(reporteHTML);
-    ventana.document.close();
+    if (ventana) {
+      ventana.document.write(reporteHTML);
+      ventana.document.close();
+    } else {
+      alert("Por favor permite las ventanas emergentes en tu navegador para ver el reporte.");
+    }
   }
 </script>
 
