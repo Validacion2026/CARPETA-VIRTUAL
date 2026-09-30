@@ -36,7 +36,7 @@
       gap: 16px;
     }
 
-    /* CREDENCIAL OFICIAL (FONDO CARNET) */
+    /* CREDENCIAL OFICIAL */
     .carnet-wrapper {
       width: 100%;
       border-radius: 18px;
@@ -51,7 +51,7 @@
       display: block;
     }
 
-    /* PANEL INFERIOR CARPETA VIRTUAL */
+    /* PANEL CARPETA VIRTUAL */
     .panel {
       background: rgba(10, 25, 47, 0.85);
       border: 1px solid var(--border-gold);
@@ -117,7 +117,7 @@
       display: none;
     }
 
-    /* SECCIONES Y BOTONES */
+    /* LISTA DE ARCHIVOS */
     .section-title {
       font-size: 12px;
       color: var(--gold-light);
@@ -167,13 +167,6 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      overflow: hidden;
-    }
-
-    .doc-title {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     .badge-tipo {
@@ -197,8 +190,36 @@
     .doc-arrow {
       color: var(--gold);
       font-size: 16px;
-      margin-left: 8px;
-      flex-shrink: 0;
+    }
+
+    /* BOTÓN DE REPORTE */
+    .btn-reporte {
+      width: 100%;
+      margin-top: 18px;
+      padding: 12px;
+      background: rgba(212, 175, 55, 0.15);
+      border: 1px dashed var(--gold);
+      border-radius: 10px;
+      color: var(--gold-light);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-reporte:hover {
+      background: rgba(212, 175, 55, 0.25);
+    }
+
+    .legal-note {
+      margin-top: 14px;
+      font-size: 11px;
+      color: #94a3b8;
+      text-align: center;
+      line-height: 1.4;
     }
 
     .hidden {
@@ -266,12 +287,12 @@
 
 <div class="container">
 
-  <!-- CREDENCIAL OFICIAL -->
+  <!-- CARNET OFICIAL -->
   <div class="carnet-wrapper">
     <img src="fondo-carnet.png" alt="Credencial Trascendiendo Fronteras" class="carnet-bg">
   </div>
 
-  <!-- PANEL DE LA CARPETA VIRTUAL -->
+  <!-- PANEL CARPETA VIRTUAL -->
   <div class="panel">
     
     <!-- Bloque PIN -->
@@ -284,17 +305,17 @@
       <div id="errorText" class="error-msg">PIN incorrecto. Intente de nuevo.</div>
     </div>
 
-    <!-- Lista de Archivos -->
+    <!-- Lista de Documentos -->
     <div id="docsView" class="hidden">
       
       <!-- 1. IDENTIDAD (IMÁGENES) -->
-      <div class="section-title">Documentos de Identidad (Imagen)</div>
+      <div class="section-title">Documentos de Identidad</div>
       <div class="docs-list">
 
         <button class="doc-item" onclick="abrirVisor('Cédula de Ciudadanía', 'cedula.jpg')">
           <div class="doc-left">
             <span>🪪</span>
-            <span class="doc-title">Cédula de Ciudadanía</span>
+            <span>Cédula de Ciudadanía</span>
             <span class="badge-tipo badge-img">FOTO</span>
           </div>
           <span class="doc-arrow">›</span>
@@ -303,7 +324,7 @@
         <button class="doc-item" onclick="abrirVisor('Pasaporte Vigente', 'pasaporte.jpg')">
           <div class="doc-left">
             <span>✈️</span>
-            <span class="doc-title">Pasaporte Oficial</span>
+            <span>Pasaporte Oficial</span>
             <span class="badge-tipo badge-img">FOTO</span>
           </div>
           <span class="doc-arrow">›</span>
@@ -311,116 +332,50 @@
 
       </div>
 
-      <!-- 2. PARTICIPACIONES - VOUCHERS (IMÁGENES) -->
-      <div class="section-title">Participaciones - Vouchers (Imagen)</div>
+      <!-- 2. PARTICIPACIONES Y CONTRATOS (PDFs MULTIPÁGINA) -->
+      <div class="section-title" id="secParticipacionesTitulo">Participaciones y Soportes (PDF)</div>
       <div class="docs-list">
 
-        <button class="doc-item" onclick="abrirVisor('Voucher Participación 1', 'voucher-activacion-de-pagos.jpg')">
+        <!-- Cuadernillo Vouchers -->
+        <a id="btnVouchers" href="vouchers.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
             <span>🧾</span>
-            <span class="doc-title">voucher activacion de pagos</span>
-            <span class="badge-tipo badge-img">FOTO</span>
+            <span>Expediente Completo de Vouchers</span>
+            <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
-        </button>
+        </a>
 
-        <button class="doc-item" onclick="abrirVisor('Voucher Participación 2', 'voucher-ara-la-gigante.jpg')">
+        <!-- Cuadernillo Contrarecibos -->
+        <a id="btnContrarecibos" href="contrarecibos.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
-            <span>🧾</span>
-            <span class="doc-title">voucher ara la gigante</span>
-            <span class="badge-tipo badge-img">FOTO</span>
+            <span>📑</span>
+            <span>Expediente Completo de Contrarecibos</span>
+            <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
-        </button>
+        </a>
 
-        <button class="doc-item" onclick="abrirVisor('Voucher Participación 3', 'voucher-flayer-bomba.jpg')">
+        <!-- Cuadernillo Contratos (Opcional) -->
+        <a id="btnContratos" href="contratos.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
-            <span>🧾</span>
-            <span class="doc-title">voucher flayer bomba</span>
-            <span class="badge-tipo badge-img">FOTO</span>
+            <span>✒️</span>
+            <span>Contratos y Acuerdos de Participación</span>
+            <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
-        </button>
-
-          <button class="doc-item" onclick="abrirVisor('Voucher Participación 4', 'voucher-la-cosecha-de-la-multiplicacion.jpg')">
-          <div class="doc-left">
-            <span>🧾</span>
-            <span class="doc-title">voucher la cosecha de la multiplicacion</span>
-            <span class="badge-tipo badge-img">FOTO</span>
-          </div>
-          <span class="doc-arrow">›</span>
-        </button>
-
-          <button class="doc-item" onclick="abrirVisor('Voucher Participación 5', 'voucher-maraton-de-donaciones.jpg')">
-          <div class="doc-left">
-            <span>🧾</span>
-            <span class="doc-title">voucher maraton de donaciones</span>
-            <span class="badge-tipo badge-img">FOTO</span>
-          </div>
-          <span class="doc-arrow">›</span>
-        </button>
-
-          <button class="doc-item" onclick="abrirVisor('Voucher Participación 6', 'voucher-membresias-25000.jpg')">
-          <div class="doc-left">
-            <span>🧾</span>
-            <span class="doc-title">voucher membresias-25000</span>
-            <span class="badge-tipo badge-img">FOTO</span>
-          </div>
-          <span class="doc-arrow">›</span>
-        </button>
-
-          <button class="doc-item" onclick="abrirVisor('Voucher Participación 7', 'voucher-tarjeta-dorada.jpg')">
-          <div class="doc-left">
-            <span>🧾</span>
-            <span class="doc-title">voucher tarjeta dorada</span>
-            <span class="badge-tipo badge-img">FOTO</span>
-          </div>
-          <span class="doc-arrow">›</span>
-        </button>
-
-          <button class="doc-item" onclick="abrirVisor('Voucher Participación 8', 'voucher-ultima-milla-dorada.jpg')">
-          <div class="doc-left">
-            <span>🧾</span>
-            <span class="doc-title">voucher-ultima-milla-dorada</span>
-            <span class="badge-tipo badge-img">FOTO</span>
-          </div>
-          <span class="doc-arrow">›</span>
-        </button>
+        </a>
 
       </div>
 
-      <!-- 3. PARTICIPACIONES - CONTRARECIBOS (IMÁGENES) -->
-      <div class="section-title">Participaciones - Contrarecibos (Imagen)</div>
-      <div class="docs-list">
-
-        <button class="doc-item" onclick="abrirVisor('Contrarecibo Oficial 1', 'contrarecibo-1.jpg')">
-          <div class="doc-left">
-            <span>📑</span>
-            <span class="doc-title">Contrarecibo Oficial N° 1</span>
-            <span class="badge-tipo badge-img">FOTO</span>
-          </div>
-          <span class="doc-arrow">›</span>
-        </button>
-
-        <button class="doc-item" onclick="abrirVisor('Contrarecibo Oficial 2', 'contrarecibo-2.jpg')">
-          <div class="doc-left">
-            <span>📑</span>
-            <span class="doc-title">Contrarecibo Oficial N° 2</span>
-            <span class="badge-tipo badge-img">FOTO</span>
-          </div>
-          <span class="doc-arrow">›</span>
-        </button>
-
-      </div>
-
-      <!-- 4. EXPEDIENTE OFICIAL (ARCHIVOS PDF) -->
-      <div class="section-title">Expediente Oficial (Archivos PDF)</div>
+      <!-- 3. EXPEDIENTE OFICIAL (ARCHIVOS PDF) -->
+      <div class="section-title">Expediente Legal Oficial</div>
       <div class="docs-list">
 
         <a href="nda.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
             <span>📜</span>
-            <span class="doc-title">Acuerdo NDA (Confidencialidad)</span>
+            <span>Acuerdo NDA</span>
             <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
@@ -429,7 +384,7 @@
         <a href="cis.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
             <span>🛡️</span>
-            <span class="doc-title">CIS</span>
+            <span>CIS</span>
             <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
@@ -438,7 +393,7 @@
         <a href="w8.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
             <span>📑</span>
-            <span class="doc-title">W-8BEN</span>
+            <span>W-8BEN</span>
             <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
@@ -447,12 +402,21 @@
         <a href="ddr.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
             <span>💼</span>
-            <span class="doc-title">DDR</span>
+            <span>DDR</span>
             <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
         </a>
 
+      </div>
+
+      <!-- BOTÓN PARA DESCARGAR REPORTE / FICHA -->
+      <button class="btn-reporte" onclick="generarReporte()">
+        <span>📄</span> Descargar Reporte de Verificación (PDF)
+      </button>
+
+      <div class="legal-note">
+        🔒 Información verificada y protegida bajo custodia institucional.
       </div>
 
     </div>
@@ -473,8 +437,41 @@
 </div>
 
 <script>
-  // PIN de seguridad
+  // 1. PIN de seguridad para este titular
   const PIN_SISTEMA = "1234";
+
+  // 2. CONFIGURACIÓN DE VISIBILIDAD PARA CADA PERSONA
+  // (Pon 'true' si tiene el documento o 'false' si no lo tiene)
+  const DOCUMENTOS_ACTIVOS = {
+    tieneVouchers: true,       // ¿Muestra vouchers.pdf?
+    tieneContrarecibos: true,   // ¿Muestra contrarecibos.pdf?
+    tieneContratos: false      // ¿Muestra contratos.pdf? (Cámbialo a true si los tiene)
+  };
+
+  // DATOS DEL TITULAR PARA EL REPORTE
+  const DATOS_TITULAR = {
+    nombre: "ANA MARIA CASTILLO FERNÁNDEZ",
+    identificacion: "1971770040",
+    entidad: "TRASCENDIENDO FRONTERAS - GEMMA Y NUBIA",
+    estado: "VERIFICADO / ACTIVO"
+  };
+
+  function aplicarConfiguracionDocumentos() {
+    if (!DOCUMENTOS_ACTIVOS.tieneVouchers) {
+      document.getElementById("btnVouchers").classList.add("hidden");
+    }
+    if (!DOCUMENTOS_ACTIVOS.tieneContrarecibos) {
+      document.getElementById("btnContrarecibos").classList.add("hidden");
+    }
+    if (!DOCUMENTOS_ACTIVOS.tieneContratos) {
+      document.getElementById("btnContratos").classList.add("hidden");
+    }
+
+    // Si no tiene ninguno de los tres, oculta también el encabezado de esa sección
+    if (!DOCUMENTOS_ACTIVOS.tieneVouchers && !DOCUMENTOS_ACTIVOS.tieneContrarecibos && !DOCUMENTOS_ACTIVOS.tieneContratos) {
+      document.getElementById("secParticipacionesTitulo").classList.add("hidden");
+    }
+  }
 
   function validarPIN() {
     const input = document.getElementById("pinInput").value;
@@ -483,6 +480,7 @@
     if (input === PIN_SISTEMA) {
       document.getElementById("pinView").classList.add("hidden");
       document.getElementById("docsView").classList.remove("hidden");
+      aplicarConfiguracionDocumentos();
     } else {
       error.style.display = "block";
     }
@@ -502,6 +500,97 @@
   document.getElementById("pinInput").addEventListener("keyup", function(e) {
     if (e.key === "Enter") validarPIN();
   });
+
+  // FUNCIÓN PARA GENERAR EL REPORTE OFICIAL IMPRIMIBLE / PDF
+  function generarReporte() {
+    const fecha = new Date().toLocaleDateString("es-CO", { year: 'numeric', month: 'long', day: 'numeric' });
+    
+    let listaDocs = `
+      <li>✓ Cédula de Ciudadanía (Soporte biométrico)</li>
+      <li>✓ Pasaporte Oficial Vigente</li>
+    `;
+
+    if (DOCUMENTOS_ACTIVOS.tieneVouchers) listaDocs += `<li>✓ Expediente de Vouchers de Participación</li>`;
+    if (DOCUMENTOS_ACTIVOS.tieneContrarecibos) listaDocs += `<li>✓ Expediente de Contrarecibos Oficiales</li>`;
+    if (DOCUMENTOS_ACTIVOS.tieneContratos) listaDocs += `<li>✓ Contratos y Acuerdos de Participación</li>`;
+
+    listaDocs += `
+      <li>✓ Acuerdo de Confidencialidad (NDA)</li>
+      <li>✓ Ficha y Estándares CIS</li>
+      <li>✓ Formulario W-8BEN</li>
+      <li>✓ Reporte de Diligencia Debida (DDR)</li>
+    `;
+
+    const contenido = `
+      <!DOCTYPE html>
+      <html lang="es">
+      <head>
+        <meta charset="UTF-8">
+        <title>Reporte de Verificación - ${DATOS_TITULAR.nombre}</title>
+        <style>
+          body { font-family: Arial, sans-serif; color: #1e293b; padding: 40px; margin: 0; line-height: 1.6; }
+          .header { border-bottom: 2px solid #d4af37; padding-bottom: 16px; margin-bottom: 24px; }
+          h1 { color: #0b2545; font-size: 20px; margin: 0 0 6px; text-transform: uppercase; }
+          h2 { color: #d4af37; font-size: 14px; margin: 0; }
+          .badge { display: inline-block; background: #ecfdf5; color: #047857; font-weight: bold; padding: 4px 10px; border-radius: 6px; font-size: 12px; margin-top: 8px; }
+          .info-table { width: 100%; border-collapse: collapse; margin-top: 20px; margin-bottom: 24px; }
+          .info-table td { padding: 10px; border: 1px solid #e2e8f0; font-size: 14px; }
+          .info-table td.label { background: #f8fafc; font-weight: bold; width: 35%; color: #475569; }
+          .doc-list { list-style: none; padding: 0; }
+          .doc-list li { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
+          .footer { margin-top: 40px; font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 12px; text-align: center; }
+          @media print {
+            body { padding: 20px; }
+          }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>${DATOS_TITULAR.entidad}</h1>
+          <h2>REPORTE DE VERIFICACIÓN DE IDENTIDAD Y EXPEDIENTE</h2>
+          <div class="badge">ESTADO: ${DATOS_TITULAR.estado}</div>
+        </div>
+
+        <table class="info-table">
+          <tr>
+            <td class="label">Titular Verificado:</td>
+            <td><strong>${DATOS_TITULAR.nombre}</strong></td>
+          </tr>
+          <tr>
+            <td class="label">Identificación Oficial:</td>
+            <td>${DATOS_TITULAR.identificacion}</td>
+          </tr>
+          <tr>
+            <td class="label">Fecha de Expedición:</td>
+            <td>${fecha}</td>
+          </tr>
+          <tr>
+            <td class="label">Sistema de Custodia:</td>
+            <td>Carpeta Virtual Segura (PIN Encriptado)</td>
+          </tr>
+        </table>
+
+        <h3 style="font-size: 15px; color: #0b2545; border-bottom: 1px solid #d4af37; padding-bottom: 6px;">Soportes Verificados en Expediente:</h3>
+        <ul class="doc-list">
+          ${listaDocs}
+        </ul>
+
+        <div class="footer">
+          🔒 Este documento certifica la existencia y custodia de los soportes registrados en la Carpeta Virtual Oficial.<br>
+          Generado automáticamente por el Portal Seguro Trascendiendo Fronteras.
+        </div>
+
+        <script>
+          window.print();
+        <\/script>
+      </body>
+      </html>
+    `;
+
+    const ventana = window.open('', '_blank');
+    ventana.document.write(contenido);
+    ventana.document.close();
+  }
 </script>
 
 </body>
