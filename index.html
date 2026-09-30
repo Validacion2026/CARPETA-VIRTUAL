@@ -30,7 +30,7 @@
 
     .container {
       width: 100%;
-      max-width: 480px;
+      max-width: 500px;
       display: flex;
       flex-direction: column;
       gap: 16px;
@@ -117,7 +117,7 @@
       display: none;
     }
 
-    /* SECCIONES Y BOTONES */
+    /* LISTA DE ARCHIVOS */
     .section-title {
       font-size: 12px;
       color: var(--gold-light);
@@ -370,7 +370,7 @@
       </div>
 
       <!-- 3. DOCUMENTOS LEGALES (ARCHIVOS PDF) -->
-      <div class="section-title">Documentos Legales (PDF)</div>
+      <div class="section-title">Expediente Legal Oficial (PDF)</div>
       <div class="docs-list">
 
         <a href="nda.pdf" target="_blank" class="doc-item">
@@ -403,7 +403,7 @@
         <a href="ddr.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
             <span>💼</span>
-            <span>DDR</span>
+            <span>Reporte DDR</span>
             <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
@@ -412,8 +412,8 @@
       </div>
 
       <!-- BOTÓN PARA GENERAR REPORTE COMPLETO -->
-      <button class="btn-reporte" onclick="generarReporteCompleto()">
-        <span>📄</span> Descargar Expediente y Reporte (PDF)
+      <button class="btn-reporte" onclick="generarReporte()">
+        <span>📄</span> Generar Reporte con Accesos de Descarga (PDF)
       </button>
 
       <div class="legal-note">
@@ -438,10 +438,10 @@
 </div>
 
 <script>
-  // 1. PIN de seguridad
+  // PIN de seguridad
   const PIN_SISTEMA = "1234";
 
-  // 2. CONFIGURACIÓN DE VISIBILIDAD (true o false)
+  // CONFIGURACIÓN DE VISIBILIDAD
   const DOCUMENTOS_ACTIVOS = {
     tieneVouchers: true,
     tieneContrarecibos: true,
@@ -499,80 +499,97 @@
     if (e.key === "Enter") validarPIN();
   });
 
-  // FUNCIÓN PARA COMPILAR Y GENERAR EL REPORTE COMPLETO EN PDF
-  function generarReporteCompleto() {
+  // FUNCIÓN DEL REPORTE CON BOTONES PARA VER Y DESCARGAR
+  function generarReporte() {
     const fecha = new Date().toLocaleDateString("es-CO", { year: 'numeric', month: 'long', day: 'numeric' });
-    const origenUrl = window.location.href.replace(/index\.html$/, '');
+    const origenUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
 
-    let cuadernillosPdf = '';
-    if (DOCUMENTOS_ACTIVOS.tieneVouchers) {
-      cuadernillosPdf += `<tr><td>Expediente de Vouchers</td><td><strong>vouchers.pdf</strong></td><td><a href="${origenUrl}vouchers.pdf" target="_blank">Ver Archivo</a></td></tr>`;
-    }
-    if (DOCUMENTOS_ACTIVOS.tieneContrarecibos) {
-      cuadernillosPdf += `<tr><td>Expediente de Contrarecibos</td><td><strong>contrarecibos.pdf</strong></td><td><a href="${origenUrl}contrarecibos.pdf" target="_blank">Ver Archivo</a></td></tr>`;
-    }
-    if (DOCUMENTOS_ACTIVOS.tieneContratos) {
-      cuadernillosPdf += `<tr><td>Contratos y Acuerdos de Participación</td><td><strong>contratos.pdf</strong></td><td><a href="${origenUrl}contratos.pdf" target="_blank">Ver Archivo</a></td></tr>`;
-    }
+    // Lista de documentos configurada con tipo y archivo
+    const listaCompleta = [
+      { nombre: "Cédula de Ciudadanía (Soporte biométrico)", archivo: "cedula.jpg", tipo: "IMG", visible: true },
+      { nombre: "Pasaporte Oficial Vigente", archivo: "pasaporte.jpg", tipo: "IMG", visible: true },
+      { nombre: "Expediente de Vouchers de Participación", archivo: "vouchers.pdf", tipo: "PDF", visible: DOCUMENTOS_ACTIVOS.tieneVouchers },
+      { nombre: "Expediente de Contrarecibos Oficiales", archivo: "contrarecibos.pdf", tipo: "PDF", visible: DOCUMENTOS_ACTIVOS.tieneContrarecibos },
+      { nombre: "Contratos y Acuerdos de Participación", archivo: "contratos.pdf", tipo: "PDF", visible: DOCUMENTOS_ACTIVOS.tieneContratos },
+      { nombre: "Acuerdo de Confidencialidad (NDA)", archivo: "nda.pdf", tipo: "PDF", visible: true },
+      { nombre: "Ficha y Estándares CIS", archivo: "cis.pdf", tipo: "PDF", visible: true },
+      { nombre: "Formulario W-8BEN", archivo: "w8.pdf", tipo: "PDF", visible: true },
+      { nombre: "Reporte de Diligencia Debida (DDR)", archivo: "ddr.pdf", tipo: "PDF", visible: true }
+    ];
 
-    cuadernillosPdf += `
-      <tr><td>Acuerdo de Confidencialidad</td><td><strong>nda.pdf</strong></td><td><a href="${origenUrl}nda.pdf" target="_blank">Ver Archivo</a></td></tr>
-      <tr><td>Estándares y Ficha de Cumplimiento</td><td><strong>cis.pdf</strong></td><td><a href="${origenUrl}cis.pdf" target="_blank">Ver Archivo</a></td></tr>
-      <tr><td>Declaración Tributaria W-8BEN</td><td><strong>w8.pdf</strong></td><td><a href="${origenUrl}w8.pdf" target="_blank">Ver Archivo</a></td></tr>
-      <tr><td>Reporte de Diligencia Debida (DDR)</td><td><strong>ddr.pdf</strong></td><td><a href="${origenUrl}ddr.pdf" target="_blank">Ver Archivo</a></td></tr>
-    `;
+    let filasHTML = '';
+
+    listaCompleta.forEach(doc => {
+      if (doc.visible) {
+        const urlArchivo = origenUrl + doc.archivo;
+        filasHTML += `
+          <li class="doc-row">
+            <div class="doc-info">
+              <span class="doc-check">✓</span>
+              <span class="doc-name">${doc.nombre}</span>
+              <span class="badge ${doc.tipo === 'PDF' ? 'badge-pdf' : 'badge-img'}">${doc.tipo}</span>
+            </div>
+            <div class="actions">
+              <a href="${urlArchivo}" target="_blank" class="btn-action btn-ver">👁️ Ver</a>
+              <a href="${urlArchivo}" download="${doc.archivo}" class="btn-action btn-descargar">📥 Descargar</a>
+            </div>
+          </li>
+        `;
+      }
+    });
 
     const reporteHTML = `
       <!DOCTYPE html>
       <html lang="es">
       <head>
         <meta charset="UTF-8">
-        <title>Expediente y Reporte Oficial - ${DATOS_TITULAR.nombre}</title>
+        <title>Reporte de Expediente - ${DATOS_TITULAR.nombre}</title>
         <style>
           * { box-sizing: border-box; }
-          body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; color: #0f172a; margin: 0; padding: 25px; background: #fff; line-height: 1.5; }
-          .page { page-break-after: always; margin-bottom: 30px; }
-          .page:last-child { page-break-after: auto; }
-          .header { border-bottom: 2px solid #d4af37; padding-bottom: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
-          .header h1 { font-size: 18px; margin: 0; color: #0a192f; text-transform: uppercase; }
-          .header p { font-size: 12px; margin: 2px 0 0; color: #64748b; }
-          .badge { background: #dcfce7; color: #15803d; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; border: 1px solid #86efac; }
-          .carnet-banner { text-align: center; margin-bottom: 20px; }
-          .carnet-banner img { width: 100%; max-width: 480px; border-radius: 12px; border: 1px solid #cbd5e1; }
-          .table-info { width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 13px; }
-          .table-info td { padding: 8px 12px; border: 1px solid #e2e8f0; }
-          .table-info td.label { background: #f8fafc; font-weight: bold; width: 35%; color: #334155; }
-          .section-heading { font-size: 14px; font-weight: bold; color: #0a192f; border-bottom: 1.5px solid #d4af37; padding-bottom: 4px; margin: 20px 0 12px; text-transform: uppercase; }
-          .table-files { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 20px; }
-          .table-files th { background: #0a192f; color: #fff; padding: 8px 10px; text-align: left; }
-          .table-files td { padding: 8px 10px; border: 1px solid #e2e8f0; }
-          .soporte-box { text-align: center; margin-top: 15px; margin-bottom: 25px; page-break-inside: avoid; }
-          .soporte-box h4 { font-size: 13px; margin: 0 0 8px; color: #334155; }
-          .soporte-box img { max-width: 90%; max-height: 480px; border-radius: 8px; border: 1px solid #cbd5e1; object-fit: contain; }
-          .footer { font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 10px; margin-top: 30px; text-align: center; }
+          body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; color: #1e293b; padding: 30px; margin: 0; background: #f8fafc; }
+          .report-container { max-width: 800px; margin: 0 auto; background: #ffffff; border-radius: 14px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
+          .header { border-bottom: 2px solid #d4af37; padding-bottom: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end; }
+          h1 { color: #0a192f; font-size: 20px; margin: 0 0 4px; text-transform: uppercase; }
+          h2 { color: #d4af37; font-size: 13px; margin: 0; letter-spacing: 0.5px; }
+          .status-badge { background: #ecfdf5; color: #047857; font-weight: 700; padding: 5px 12px; border-radius: 6px; font-size: 12px; border: 1px solid #a7f3d0; }
+          .info-table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 13px; }
+          .info-table td { padding: 9px 12px; border: 1px solid #e2e8f0; }
+          .info-table td.label { background: #f8fafc; font-weight: 700; width: 32%; color: #475569; }
+          .section-title { font-size: 14px; font-weight: 700; color: #0a192f; border-bottom: 1.5px solid #d4af37; padding-bottom: 6px; margin: 24px 0 14px; text-transform: uppercase; }
+          .doc-list { list-style: none; padding: 0; margin: 0; }
+          .doc-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid #f1f5f9; gap: 10px; }
+          .doc-row:nth-child(even) { background: #fcfcfd; }
+          .doc-info { display: flex; align-items: center; gap: 10px; font-size: 13px; flex: 1; }
+          .doc-check { color: #16a34a; font-weight: 800; font-size: 14px; }
+          .doc-name { font-weight: 600; color: #334155; }
+          .badge { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+          .badge-pdf { background: #fee2e2; color: #991b1b; }
+          .badge-img { background: #dbeafe; color: #1e40af; }
+          .actions { display: flex; gap: 8px; }
+          .btn-action { text-decoration: none; font-size: 12px; font-weight: 700; padding: 6px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px; transition: 0.2s; }
+          .btn-ver { background: #f1f5f9; color: #0f172a; border: 1px solid #cbd5e1; }
+          .btn-ver:hover { background: #e2e8f0; }
+          .btn-descargar { background: #0a192f; color: #fef08a; border: 1px solid #0a192f; }
+          .btn-descargar:hover { background: #1e293b; color: #fff; }
+          .footer { margin-top: 30px; font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 14px; text-align: center; }
           @media print {
-            body { padding: 0; }
-            .soporte-box img { max-height: 420px; }
+            body { padding: 0; background: #fff; }
+            .report-container { box-shadow: none; border: none; padding: 0; }
+            .actions { display: none; }
           }
         </style>
       </head>
       <body>
-
-        <!-- PÁGINA 1: FICHA TÉCNICA Y CUADERNILLOS PDF -->
-        <div class="page">
+        <div class="report-container">
           <div class="header">
             <div>
               <h1>${DATOS_TITULAR.entidad}</h1>
-              <p>EXPEDIENTE INSTITUCIONAL DE VERIFICACIÓN</p>
+              <h2>REPORTE OFICIAL DE EXPEDIENTE Y DESCARGAS</h2>
             </div>
-            <div class="badge">${DATOS_TITULAR.estado}</div>
+            <div class="status-badge">${DATOS_TITULAR.estado}</div>
           </div>
 
-          <div class="carnet-banner">
-            <img src="${origenUrl}fondo-carnet.png" alt="Credencial Oficial">
-          </div>
-
-          <table class="table-info">
+          <table class="info-table">
             <tr>
               <td class="label">Titular Verificado:</td>
               <td><strong>${DATOS_TITULAR.nombre}</strong></td>
@@ -582,66 +599,25 @@
               <td>${DATOS_TITULAR.identificacion}</td>
             </tr>
             <tr>
-              <td class="label">Fecha de Emisión del Reporte:</td>
+              <td class="label">Fecha del Reporte:</td>
               <td>${fecha}</td>
             </tr>
             <tr>
-              <td class="label">Nivel de Seguridad:</td>
-              <td>Carpeta Virtual Cifrada (PIN institucional)</td>
+              <td class="label">Custodia:</td>
+              <td>Carpeta Virtual Segura (Acceso Autenticado)</td>
             </tr>
           </table>
 
-          <div class="section-heading">Cuadernillos Legales y Financieros Anexos (PDF)</div>
-          <table class="table-files">
-            <thead>
-              <tr>
-                <th>Documento</th>
-                <th>Nombre del Archivo</th>
-                <th>Acceso Directo</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${cuadernillosPdf}
-            </tbody>
-          </table>
+          <div class="section-title">Soportes Verificados en Expediente:</div>
+          <ul class="doc-list">
+            ${filasHTML}
+          </ul>
 
           <div class="footer">
-            🔒 Información institucional verificada. Página 1 de 2.
+            🔒 Este reporte contiene los accesos directos autorizados a las imágenes y documentos PDF custodiados.<br>
+            Portal Oficial Trascendiendo Fronteras.
           </div>
         </div>
-
-        <!-- PÁGINA 2: SOPORTES BIOMÉTRICOS Y FOTOGRÁFICOS -->
-        <div class="page">
-          <div class="header">
-            <div>
-              <h1>ANEXO BIOMÉTRICO Y DE IDENTIDAD</h1>
-              <p>Titular: ${DATOS_TITULAR.nombre} — C.C. ${DATOS_TITULAR.identificacion}</p>
-            </div>
-            <div class="badge">SOPORTES GRÁFICOS</div>
-          </div>
-
-          <div class="soporte-box">
-            <h4>1. CÉDULA DE CIUDADANÍA OFICIAL</h4>
-            <img src="${origenUrl}cedula.jpg" alt="Cédula de Ciudadanía">
-          </div>
-
-          <div class="soporte-box">
-            <h4>2. PASAPORTE OFICIAL VIGENTE</h4>
-            <img src="${origenUrl}pasaporte.jpg" alt="Pasaporte Vigente">
-          </div>
-
-          <div class="footer">
-            🔒 Los soportes mostrados corresponden fielmente a los originales custodiados en el servidor seguro. Página 2 de 2.
-          </div>
-        </div>
-
-        <script>
-          window.onload = function() {
-            setTimeout(function() {
-              window.print();
-            }, 600);
-          };
-        <\/script>
       </body>
       </html>
     `;
