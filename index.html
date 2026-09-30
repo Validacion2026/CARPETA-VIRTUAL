@@ -3,369 +3,445 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Proyectos Humanitarios</title>
+  <title>Trascendiendo Fronteras - Carpeta Virtual</title>
   <style>
     :root {
-      --primary: #059669;
-      --primary-dark: #047857;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+      --gold: #d4af37;
+      --gold-light: #fef08a;
+      --blue-dark: #0a192f;
+      --border-gold: rgba(212, 175, 55, 0.4);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
     }
 
     body {
-      background-color: var(--bg);
-      color: var(--text-main);
+      background: radial-gradient(circle at top, #0d2847 0%, #030d1a 100%);
+      color: #ffffff;
+      min-height: 100vh;
       display: flex;
       justify-content: center;
-      padding: 20px 12px;
-      min-height: 100vh;
+      padding: 16px 10px;
     }
 
     .container {
       width: 100%;
-      max-width: 440px;
+      max-width: 480px;
       display: flex;
       flex-direction: column;
       gap: 16px;
     }
 
-    /* Tarjeta Principal */
-    .card {
-      background: var(--card-bg);
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      padding: 24px;
+    /* CREDENCIAL PRINCIPAL CON FONDO */
+    .carnet-wrapper {
       position: relative;
+      width: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.2);
+      border: 1px solid var(--border-gold);
     }
 
-    /* Encabezado */
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 14px;
-      margin-bottom: 20px;
+    .carnet-bg {
+      width: 100%;
+      height: auto;
+      display: block;
     }
 
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    .carnet-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
     }
 
-    .icon-badge {
-      width: 40px;
-      height: 40px;
-      background: #ecfdf5;
-      color: var(--primary);
-      border-radius: 12px;
+    /* Recuadro de la foto */
+    .foto-marco {
+      position: absolute;
+      top: 17%;
+      right: 5.5%;
+      width: 21%;
+      height: 38%;
+      border-radius: 6px;
+      overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
     }
 
-    .header-titles h1 {
-      font-size: 15px;
+    .foto-marco img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Campos de texto sobre la credencial */
+    .dato-nombre {
+      position: absolute;
+      top: 48.5%;
+      left: 38%;
+      width: 38%;
+      font-size: 11px;
       font-weight: 800;
-      letter-spacing: 0.5px;
-      color: var(--text-main);
+      color: #0b2545;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       text-transform: uppercase;
     }
 
-    .status-pill {
-      background: #ecfdf5;
-      color: var(--primary);
-      font-size: 12px;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 20px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+    .dato-identificacion {
+      position: absolute;
+      top: 65.5%;
+      left: 38%;
+      width: 38%;
+      font-size: 11px;
+      font-weight: 800;
+      color: #0b2545;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .status-dot {
-      width: 7px;
-      height: 7px;
-      background: var(--primary);
-      border-radius: 50%;
+    /* PANEL INFERIOR CARPETA VIRTUAL */
+    .panel {
+      background: rgba(10, 25, 47, 0.85);
+      border: 1px solid var(--border-gold);
+      border-radius: 16px;
+      padding: 20px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
     }
 
-    /* Perfil */
-    .profile-section {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-bottom: 20px;
-    }
-
-    .avatar {
-      width: 65px;
-      height: 65px;
-      border-radius: 50%;
-      background: #e2e8f0;
-      object-fit: cover;
-      border: 2px solid var(--border);
-    }
-
-    .profile-info h2 {
-      font-size: 17px;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-
-    .profile-info p {
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    /* Pantalla PIN */
     .pin-box {
       text-align: center;
-      padding: 15px 0 5px;
-    }
-
-    .lock-icon {
-      font-size: 34px;
-      margin-bottom: 8px;
     }
 
     .pin-box h3 {
+      color: var(--gold-light);
       font-size: 16px;
       margin-bottom: 6px;
+      letter-spacing: 0.5px;
     }
 
     .pin-box p {
+      color: #94a3b8;
       font-size: 13px;
-      color: var(--text-muted);
       margin-bottom: 16px;
     }
 
     .pin-input {
-      width: 170px;
+      width: 160px;
       padding: 10px;
       font-size: 22px;
-      letter-spacing: 10px;
+      letter-spacing: 8px;
       text-align: center;
-      border: 2px solid var(--border);
-      border-radius: 12px;
+      border: 2px solid var(--border-gold);
+      border-radius: 10px;
+      background: #030d1a;
+      color: #ffffff;
       outline: none;
-      transition: border-color 0.2s;
     }
 
     .pin-input:focus {
-      border-color: var(--primary);
+      border-color: var(--gold);
     }
 
     .btn-verify {
-      display: block;
       width: 100%;
       margin-top: 14px;
       padding: 12px;
-      background: var(--text-main);
-      color: white;
+      background: linear-gradient(135deg, #d4af37 0%, #aa820a 100%);
+      color: #000;
       border: none;
-      border-radius: 12px;
+      border-radius: 10px;
       font-size: 14px;
-      font-weight: 600;
+      font-weight: 800;
       cursor: pointer;
-    }
-
-    .btn-verify:active {
-      background: #1e293b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .error-msg {
-      color: #ef4444;
+      color: #f87171;
       font-size: 12px;
       margin-top: 8px;
       display: none;
     }
 
-    /* Lista de Botones para PDFs */
+    /* LISTA DE ARCHIVOS */
+    .section-title {
+      font-size: 12px;
+      color: var(--gold-light);
+      margin: 14px 0 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      padding-bottom: 4px;
+    }
+
+    .section-title:first-child {
+      margin-top: 0;
+    }
+
     .docs-list {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 9px;
+      margin-bottom: 6px;
     }
 
-    .doc-btn {
+    .doc-item {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 14px 16px;
-      border-radius: 12px;
-      background: #f8fafc;
-      border: 1px solid var(--border);
-      text-decoration: none;
-      color: var(--text-main);
-      font-size: 14px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: #f1f5f9;
+      font-size: 13px;
       font-weight: 600;
-      transition: all 0.15s ease;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
 
-    .doc-btn:hover, .doc-btn:active {
-      background: #f1f5f9;
-      border-color: #cbd5e1;
+    .doc-item:hover, .doc-item:active {
+      background: rgba(212, 175, 55, 0.15);
+      border-color: var(--gold);
     }
 
     .doc-left {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .doc-icon {
-      font-size: 18px;
-    }
-
-    .doc-tag {
+    .badge-tipo {
       font-size: 10px;
-      background: #fee2e2;
-      color: #b91c1c;
       padding: 2px 6px;
-      border-radius: 6px;
+      border-radius: 4px;
       font-weight: 700;
-      letter-spacing: 0.5px;
+    }
+
+    .badge-img {
+      background: #1e3a8a;
+      color: #93c5fd;
+    }
+
+    .badge-pdf {
+      background: #7f1d1d;
+      color: #fca5a5;
     }
 
     .doc-arrow {
-      color: var(--text-muted);
-      font-size: 18px;
-    }
-
-    .footer-note {
-      font-size: 11px;
-      text-align: center;
-      color: var(--text-muted);
-      margin-top: 18px;
-      line-height: 1.4;
+      color: var(--gold);
+      font-size: 16px;
     }
 
     .hidden {
       display: none !important;
+    }
+
+    /* MODAL DE IMÁGENES */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(3, 13, 26, 0.95);
+      backdrop-filter: blur(6px);
+      display: flex;
+      flex-direction: column;
+      z-index: 9999;
+      padding: 14px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 1px solid var(--border-gold);
+      padding-bottom: 10px;
+    }
+
+    .modal-title {
+      color: var(--gold-light);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .modal-close {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #fff;
+      font-size: 18px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: auto;
+    }
+
+    .modal-body img {
+      max-width: 100%;
+      max-height: 85vh;
+      border-radius: 8px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.7);
     }
   </style>
 </head>
 <body>
 
 <div class="container">
-  <div class="card">
+
+  <!-- CARNET VISUAL OFICIAL CON FONDO -->
+  <div class="carnet-wrapper">
+    <img src="fondo-carnet.png" alt="Credencial Oficial" class="carnet-bg">
     
-    <!-- Encabezado -->
-    <div class="header">
-      <div class="header-left">
-        <div class="icon-badge">🤝</div>
-        <div class="header-titles">
-          <h1>PROYECTOS HUMANITARIOS</h1>
-        </div>
+    <div class="carnet-overlay">
+      <div class="foto-marco">
+        <img src="foto.jpg" alt="Foto Rostro">
       </div>
-      <div class="status-pill">
-        <span class="status-dot"></span>
-        ACTIVO
-      </div>
+      <div class="dato-nombre">ANA MARÍA CASTILLO</div>
+      <div class="dato-identificacion">C.C. 1.088.234.567</div>
     </div>
+  </div>
 
-    <!-- Perfil Titular -->
-    <div class="profile-section">
-      <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=face" alt="Foto Titular" class="avatar">
-      <div class="profile-info">
-        <h2>ANA MARÍA CASTILLO</h2>
-        <p>C.C. 1.088.234.567</p>
-      </div>
-    </div>
-
-    <!-- Pantalla PIN -->
+  <!-- PANEL CARPETA VIRTUAL -->
+  <div class="panel">
+    
+    <!-- Bloque PIN -->
     <div id="pinView" class="pin-box">
-      <div class="lock-icon">🔒</div>
-      <h3>Acceso Protegido</h3>
-      <p>Ingrese el código PIN para consultar los soportes oficiales.</p>
+      <h3>📁 CARPETA VIRTUAL</h3>
+      <p>Ingrese el PIN para ver los soportes adjuntos.</p>
       
       <input type="password" id="pinInput" class="pin-input" maxlength="4" placeholder="••••" inputmode="numeric">
-      <button class="btn-verify" onclick="validarPIN()">Verificar Acceso</button>
-      <div id="errorText" class="error-msg">PIN no válido. Intente de nuevo.</div>
+      <button class="btn-verify" onclick="validarPIN()">Acceder a Soportes</button>
+      <div id="errorText" class="error-msg">PIN incorrecto. Intente de nuevo.</div>
     </div>
 
-    <!-- Enlaces directos a PDFs -->
+    <!-- Lista de Archivos -->
     <div id="docsView" class="hidden">
+      
+      <!-- SECCIÓN IMÁGENES: CÉDULA Y PASAPORTE -->
+      <div class="section-title">Documentos de Identidad (Imagen)</div>
       <div class="docs-list">
-        
-        <!-- 1. Cédula -->
-        <a href="CEDULA ANA MARIA.pdf" target="_blank" class="doc-btn">
+
+        <!-- Cédula (Imagen) -->
+        <button class="doc-item" onclick="abrirVisor('Cédula de Ciudadanía', 'CEDULA ANA MARIA.jpg')">
           <div class="doc-left">
-            <span class="doc-icon">🪪</span>
+            <span>🪪</span>
             <span>Cédula de Ciudadanía</span>
-            <span class="doc-tag">PDF</span>
+            <span class="badge-tipo badge-img">FOTO</span>
           </div>
           <span class="doc-arrow">›</span>
-        </a>
+        </button>
 
-        <!-- 2. Pasaporte -->
-        <a href="PASAPORTE.pdf" target="_blank" class="doc-btn">
+        <!-- Pasaporte (Imagen) -->
+        <button class="doc-item" onclick="abrirVisor('Pasaporte Vigente', 'PASAPORTE.jpg')">
           <div class="doc-left">
-            <span class="doc-icon">✈️</span>
+            <span>✈️</span>
             <span>Pasaporte Oficial</span>
-            <span class="doc-tag">PDF</span>
+            <span class="badge-tipo badge-img">FOTO</span>
+          </div>
+          <span class="doc-arrow">›</span>
+        </button>
+
+      </div>
+
+      <!-- SECCIÓN PDFS: PARTICIPACIONES, NDA, CIS, W8, DDR -->
+      <div class="section-title">Expediente Oficial (Archivos PDF)</div>
+      <div class="docs-list">
+
+        <!-- Participaciones (PDF) -->
+        <a href="participaciones.pdf" target="_blank" class="doc-item">
+          <div class="doc-left">
+            <span>🏅</span>
+            <span>Participaciones y Acreditaciones</span>
+            <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
         </a>
 
-        <!-- 3. NDA -->
-        <a href="1_NDA_ACUERDO_NO_DIVULGACION_ANA MARIA CASTILLO FERNANDEZ.pdf" target="_blank" class="doc-btn">
+        <!-- NDA (PDF) -->
+        <a href="NDA ANA MARIA CASTILLO FERNANDEZ.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
-            <span class="doc-icon">📜</span>
-            <span>Acuerdo de Confidencialidad (NDA)</span>
-            <span class="doc-tag">PDF</span>
+            <span>📜</span>
+            <span>Acuerdo NDA (Confidencialidad)</span>
+            <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
         </a>
 
-        <!-- 4. CIS -->
-        <a href="CIS_ANA MARIA CASTILLO FERNANDEZ.pdf" target="_blank" class="doc-btn">
+        <!-- CIS (PDF) -->
+        <a href="CIS ANA MARIA CASTILLO FERNANDEZ.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
-            <span class="doc-icon">🛡️</span>
-            <span>Estándares y Ficha CIS</span>
-            <span class="doc-tag">PDF</span>
+            <span>🛡️</span>
+            <span>CIS</span>
+            <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
         </a>
 
-        <!-- 5. Vouchers -->
-        <a href="vouchers.pdf" target="_blank" class="doc-btn">
+        <!-- W8 (PDF) -->
+        <a href="W8 ANA MARIA CASTILLO FERNANDEZ.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
-            <span class="doc-icon">🧾</span>
-            <span>Vouchers y Viáticos</span>
-            <span class="doc-tag">PDF</span>
+            <span>📑</span>
+            <span>Formulario W-8BEN</span>
+            <span class="badge-tipo badge-pdf">PDF</span>
+          </div>
+          <span class="doc-arrow">›</span>
+        </a>
+
+        <!-- DDR (PDF) -->
+        <a href="DDR ANA MARIA CASTILLO FERNÁNDEZ.pdf" target="_blank" class="doc-item">
+          <div class="doc-left">
+            <span>💼</span>
+            <span>Reporte DDR (Due Diligence)</span>
+            <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
         </a>
 
       </div>
 
-      <div class="footer-note">
-        🔒 Información protegida bajo estrictos estándares de confidencialidad y control interno.
-      </div>
     </div>
 
+  </div>
+
+</div>
+
+<!-- Modal para visor de fotos -->
+<div id="modalVisor" class="modal hidden">
+  <div class="modal-header">
+    <div id="modalTitulo" class="modal-title">Documento</div>
+    <button class="modal-close" onclick="cerrarVisor()">✕</button>
+  </div>
+  <div class="modal-body">
+    <img id="modalImg" src="" alt="Soporte visual">
   </div>
 </div>
 
 <script>
-  // PIN de seguridad para este carnet (cámbialo si lo necesitas)
+  // PIN de seguridad
   const PIN_SISTEMA = "1234";
 
   function validarPIN() {
@@ -380,11 +456,19 @@
     }
   }
 
-  // Permitir presionar "Enter" en el teclado numérico
-  document.getElementById("pinInput").addEventListener("keyup", function(event) {
-    if (event.key === "Enter") {
-      validarPIN();
-    }
+  function abrirVisor(titulo, archivo) {
+    document.getElementById("modalTitulo").innerText = titulo;
+    document.getElementById("modalImg").src = archivo;
+    document.getElementById("modalVisor").classList.remove("hidden");
+  }
+
+  function cerrarVisor() {
+    document.getElementById("modalVisor").classList.add("hidden");
+    document.getElementById("modalImg").src = "";
+  }
+
+  document.getElementById("pinInput").addEventListener("keyup", function(e) {
+    if (e.key === "Enter") validarPIN();
   });
 </script>
 
