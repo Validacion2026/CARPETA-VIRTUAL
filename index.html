@@ -36,9 +36,8 @@
       gap: 16px;
     }
 
-    /* CONTENEDOR DE LA TARJETA OFICIAL */
+    /* CREDENCIAL OFICIAL (SOLO LA IMAGEN DEL CARNET) */
     .carnet-wrapper {
-      position: relative;
       width: 100%;
       border-radius: 18px;
       overflow: hidden;
@@ -50,26 +49,6 @@
       width: 100%;
       height: auto;
       display: block;
-    }
-
-    /* MARCO PARA LA FOTO DEL TITULAR */
-    .foto-marco {
-      position: absolute;
-      top: 17%;
-      right: 5.5%;
-      width: 21%;
-      height: 38%;
-      border-radius: 6px;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .foto-marco img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
     }
 
     /* PANEL INFERIOR CARPETA VIRTUAL */
@@ -275,14 +254,12 @@
 
 <div class="container">
 
-  <!-- TARJETA OFICIAL CON TU DISEÑO -->
+  <!-- SOLO LA IMAGEN DE TU CARNET -->
   <div class="carnet-wrapper">
-    <!-- Usa exactamente tu imagen subida: fondo-carnet.jpg -->
     <img src="fondo-carnet.jpg" alt="Credencial Trascendiendo Fronteras" class="carnet-bg">
-      
   </div>
 
-  <!-- PANEL DE LA CARPETA VIRTUAL -->
+  <!-- PANEL CARPETA VIRTUAL -->
   <div class="panel">
     
     <!-- Bloque PIN -->
@@ -295,14 +272,14 @@
       <div id="errorText" class="error-msg">PIN incorrecto. Intente de nuevo.</div>
     </div>
 
-    <!-- Lista de Soportes -->
+    <!-- Lista de Archivos -->
     <div id="docsView" class="hidden">
       
       <!-- IMÁGENES: CÉDULA Y PASAPORTE -->
       <div class="section-title">Documentos de Identidad (Imagen)</div>
       <div class="docs-list">
 
-        <button class="doc-item" onclick="abrirVisor('Cédula de Ciudadanía', 'CEDULA ANA MARIA.jpg')">
+        <button class="doc-item" onclick="abrirVisor('Cédula de Ciudadanía', 'cedula.jpg')">
           <div class="doc-left">
             <span>🪪</span>
             <span>Cédula de Ciudadanía</span>
@@ -311,7 +288,7 @@
           <span class="doc-arrow">›</span>
         </button>
 
-        <button class="doc-item" onclick="abrirVisor('Pasaporte Vigente', 'PASAPORTE.jpg')">
+        <button class="doc-item" onclick="abrirVisor('Pasaporte Vigente', 'pasaporte.jpg')">
           <div class="doc-left">
             <span>✈️</span>
             <span>Pasaporte Oficial</span>
@@ -335,7 +312,7 @@
           <span class="doc-arrow">›</span>
         </a>
 
-        <a href="NDA ANA MARIA CASTILLO FERNANDEZ.pdf" target="_blank" class="doc-item">
+        <a href="nda.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
             <span>📜</span>
             <span>Acuerdo NDA (Confidencialidad)</span>
@@ -344,16 +321,16 @@
           <span class="doc-arrow">›</span>
         </a>
 
-        <a href="CIS ANA MARIA CASTILLO FERNANDEZ.pdf" target="_blank" class="doc-item">
+        <a href="cis.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
-            <span>🛡️️</span>
+            <span>🛡️</span>
             <span>CIS</span>
             <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
         </a>
 
-        <a href="W8 ANA MARIA CASTILLO FERNANDEZ.pdf" target="_blank" class="doc-item">
+        <a href="w8.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
             <span>📑</span>
             <span>Formulario W-8BEN</span>
@@ -362,10 +339,10 @@
           <span class="doc-arrow">›</span>
         </a>
 
-        <a href="DDR ANA MARIA CASTILLO FERNÁNDEZ.pdf" target="_blank" class="doc-item">
+        <a href="ddr.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
             <span>💼</span>
-            <span>DDR (Due Diligence)</span>
+            <span>Reporte DDR (Due Diligence)</span>
             <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
@@ -423,5 +400,4 @@
 </script>
 
 </body>
-</html>   
-      
+</html>  
