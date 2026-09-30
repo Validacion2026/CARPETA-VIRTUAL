@@ -117,7 +117,7 @@
       display: none;
     }
 
-    /* LISTA DE ARCHIVOS */
+    /* SECCIONES Y BOTONES */
     .section-title {
       font-size: 12px;
       color: var(--gold-light);
@@ -197,8 +197,8 @@
       width: 100%;
       margin-top: 18px;
       padding: 12px;
-      background: rgba(212, 175, 55, 0.15);
-      border: 1px dashed var(--gold);
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(212, 175, 55, 0.08) 100%);
+      border: 1px solid var(--gold);
       border-radius: 10px;
       color: var(--gold-light);
       font-size: 13px;
@@ -208,10 +208,11 @@
       align-items: center;
       justify-content: center;
       gap: 8px;
+      transition: all 0.2s ease;
     }
 
     .btn-reporte:hover {
-      background: rgba(212, 175, 55, 0.25);
+      background: rgba(212, 175, 55, 0.3);
     }
 
     .legal-note {
@@ -287,7 +288,7 @@
 
 <div class="container">
 
-  <!-- CARNET OFICIAL -->
+  <!-- CREDENCIAL OFICIAL -->
   <div class="carnet-wrapper">
     <img src="fondo-carnet.png" alt="Credencial Trascendiendo Fronteras" class="carnet-bg">
   </div>
@@ -305,11 +306,11 @@
       <div id="errorText" class="error-msg">PIN incorrecto. Intente de nuevo.</div>
     </div>
 
-    <!-- Lista de Documentos -->
+    <!-- Lista de Archivos -->
     <div id="docsView" class="hidden">
       
       <!-- 1. IDENTIDAD (IMÁGENES) -->
-      <div class="section-title">Documentos de Identidad</div>
+      <div class="section-title">Documentos de Identidad (Imagen)</div>
       <div class="docs-list">
 
         <button class="doc-item" onclick="abrirVisor('Cédula de Ciudadanía', 'cedula.jpg')">
@@ -368,8 +369,8 @@
 
       </div>
 
-      <!-- 3. EXPEDIENTE OFICIAL (ARCHIVOS PDF) -->
-      <div class="section-title">Documentos Legales</div>
+      <!-- 3. DOCUMENTOS LEGALES (ARCHIVOS PDF) -->
+      <div class="section-title">Documentos Legales (PDF)</div>
       <div class="docs-list">
 
         <a href="nda.pdf" target="_blank" class="doc-item">
@@ -410,9 +411,9 @@
 
       </div>
 
-      <!-- BOTÓN PARA DESCARGAR REPORTE / FICHA -->
-      <button class="btn-reporte" onclick="generarReporte()">
-        <span>📄</span> Descargar Reporte de Verificación (PDF)
+      <!-- BOTÓN PARA GENERAR REPORTE COMPLETO -->
+      <button class="btn-reporte" onclick="generarReporteCompleto()">
+        <span>📄</span> Descargar Expediente y Reporte (PDF)
       </button>
 
       <div class="legal-note">
@@ -437,18 +438,17 @@
 </div>
 
 <script>
-  // 1. PIN de seguridad para este titular
+  // 1. PIN de seguridad
   const PIN_SISTEMA = "1234";
 
-  // 2. CONFIGURACIÓN DE VISIBILIDAD PARA CADA PERSONA
-  // (Pon 'true' si tiene el documento o 'false' si no lo tiene)
+  // 2. CONFIGURACIÓN DE VISIBILIDAD (true o false)
   const DOCUMENTOS_ACTIVOS = {
-    tieneVouchers: true,       // ¿Muestra vouchers.pdf?
-    tieneContrarecibos: true,   // ¿Muestra contrarecibos.pdf?
-    tieneContratos: false      // ¿Muestra contratos.pdf? (Cámbialo a true si los tiene)
+    tieneVouchers: true,
+    tieneContrarecibos: true,
+    tieneContratos: false
   };
 
-  // DATOS DEL TITULAR PARA EL REPORTE
+  // DATOS DEL TITULAR
   const DATOS_TITULAR = {
     nombre: "ANA MARIA CASTILLO FERNÁNDEZ",
     identificacion: "1971770040",
@@ -466,8 +466,6 @@
     if (!DOCUMENTOS_ACTIVOS.tieneContratos) {
       document.getElementById("btnContratos").classList.add("hidden");
     }
-
-    // Si no tiene ninguno de los tres, oculta también el encabezado de esa sección
     if (!DOCUMENTOS_ACTIVOS.tieneVouchers && !DOCUMENTOS_ACTIVOS.tieneContrarecibos && !DOCUMENTOS_ACTIVOS.tieneContratos) {
       document.getElementById("secParticipacionesTitulo").classList.add("hidden");
     }
@@ -501,94 +499,155 @@
     if (e.key === "Enter") validarPIN();
   });
 
-  // FUNCIÓN PARA GENERAR EL REPORTE OFICIAL IMPRIMIBLE / PDF
-  function generarReporte() {
+  // FUNCIÓN PARA COMPILAR Y GENERAR EL REPORTE COMPLETO EN PDF
+  function generarReporteCompleto() {
     const fecha = new Date().toLocaleDateString("es-CO", { year: 'numeric', month: 'long', day: 'numeric' });
-    
-    let listaDocs = `
-      <li>✓ Cédula de Ciudadanía (Soporte biométrico)</li>
-      <li>✓ Pasaporte Oficial Vigente</li>
+    const origenUrl = window.location.href.replace(/index\.html$/, '');
+
+    let cuadernillosPdf = '';
+    if (DOCUMENTOS_ACTIVOS.tieneVouchers) {
+      cuadernillosPdf += `<tr><td>Expediente de Vouchers</td><td><strong>vouchers.pdf</strong></td><td><a href="${origenUrl}vouchers.pdf" target="_blank">Ver Archivo</a></td></tr>`;
+    }
+    if (DOCUMENTOS_ACTIVOS.tieneContrarecibos) {
+      cuadernillosPdf += `<tr><td>Expediente de Contrarecibos</td><td><strong>contrarecibos.pdf</strong></td><td><a href="${origenUrl}contrarecibos.pdf" target="_blank">Ver Archivo</a></td></tr>`;
+    }
+    if (DOCUMENTOS_ACTIVOS.tieneContratos) {
+      cuadernillosPdf += `<tr><td>Contratos y Acuerdos de Participación</td><td><strong>contratos.pdf</strong></td><td><a href="${origenUrl}contratos.pdf" target="_blank">Ver Archivo</a></td></tr>`;
+    }
+
+    cuadernillosPdf += `
+      <tr><td>Acuerdo de Confidencialidad</td><td><strong>nda.pdf</strong></td><td><a href="${origenUrl}nda.pdf" target="_blank">Ver Archivo</a></td></tr>
+      <tr><td>Estándares y Ficha de Cumplimiento</td><td><strong>cis.pdf</strong></td><td><a href="${origenUrl}cis.pdf" target="_blank">Ver Archivo</a></td></tr>
+      <tr><td>Declaración Tributaria W-8BEN</td><td><strong>w8.pdf</strong></td><td><a href="${origenUrl}w8.pdf" target="_blank">Ver Archivo</a></td></tr>
+      <tr><td>Reporte de Diligencia Debida (DDR)</td><td><strong>ddr.pdf</strong></td><td><a href="${origenUrl}ddr.pdf" target="_blank">Ver Archivo</a></td></tr>
     `;
 
-    if (DOCUMENTOS_ACTIVOS.tieneVouchers) listaDocs += `<li>✓ Expediente de Vouchers de Participación</li>`;
-    if (DOCUMENTOS_ACTIVOS.tieneContrarecibos) listaDocs += `<li>✓ Expediente de Contrarecibos Oficiales</li>`;
-    if (DOCUMENTOS_ACTIVOS.tieneContratos) listaDocs += `<li>✓ Contratos y Acuerdos de Participación</li>`;
-
-    listaDocs += `
-      <li>✓ Acuerdo de Confidencialidad (NDA)</li>
-      <li>✓ Ficha y Estándares CIS</li>
-      <li>✓ Formulario W-8BEN</li>
-      <li>✓ Reporte de Diligencia Debida (DDR)</li>
-    `;
-
-    const contenido = `
+    const reporteHTML = `
       <!DOCTYPE html>
       <html lang="es">
       <head>
         <meta charset="UTF-8">
-        <title>Reporte de Verificación - ${DATOS_TITULAR.nombre}</title>
+        <title>Expediente y Reporte Oficial - ${DATOS_TITULAR.nombre}</title>
         <style>
-          body { font-family: Arial, sans-serif; color: #1e293b; padding: 40px; margin: 0; line-height: 1.6; }
-          .header { border-bottom: 2px solid #d4af37; padding-bottom: 16px; margin-bottom: 24px; }
-          h1 { color: #0b2545; font-size: 20px; margin: 0 0 6px; text-transform: uppercase; }
-          h2 { color: #d4af37; font-size: 14px; margin: 0; }
-          .badge { display: inline-block; background: #ecfdf5; color: #047857; font-weight: bold; padding: 4px 10px; border-radius: 6px; font-size: 12px; margin-top: 8px; }
-          .info-table { width: 100%; border-collapse: collapse; margin-top: 20px; margin-bottom: 24px; }
-          .info-table td { padding: 10px; border: 1px solid #e2e8f0; font-size: 14px; }
-          .info-table td.label { background: #f8fafc; font-weight: bold; width: 35%; color: #475569; }
-          .doc-list { list-style: none; padding: 0; }
-          .doc-list li { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
-          .footer { margin-top: 40px; font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 12px; text-align: center; }
+          * { box-sizing: border-box; }
+          body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; color: #0f172a; margin: 0; padding: 25px; background: #fff; line-height: 1.5; }
+          .page { page-break-after: always; margin-bottom: 30px; }
+          .page:last-child { page-break-after: auto; }
+          .header { border-bottom: 2px solid #d4af37; padding-bottom: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: flex-end; }
+          .header h1 { font-size: 18px; margin: 0; color: #0a192f; text-transform: uppercase; }
+          .header p { font-size: 12px; margin: 2px 0 0; color: #64748b; }
+          .badge { background: #dcfce7; color: #15803d; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; border: 1px solid #86efac; }
+          .carnet-banner { text-align: center; margin-bottom: 20px; }
+          .carnet-banner img { width: 100%; max-width: 480px; border-radius: 12px; border: 1px solid #cbd5e1; }
+          .table-info { width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 13px; }
+          .table-info td { padding: 8px 12px; border: 1px solid #e2e8f0; }
+          .table-info td.label { background: #f8fafc; font-weight: bold; width: 35%; color: #334155; }
+          .section-heading { font-size: 14px; font-weight: bold; color: #0a192f; border-bottom: 1.5px solid #d4af37; padding-bottom: 4px; margin: 20px 0 12px; text-transform: uppercase; }
+          .table-files { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 20px; }
+          .table-files th { background: #0a192f; color: #fff; padding: 8px 10px; text-align: left; }
+          .table-files td { padding: 8px 10px; border: 1px solid #e2e8f0; }
+          .soporte-box { text-align: center; margin-top: 15px; margin-bottom: 25px; page-break-inside: avoid; }
+          .soporte-box h4 { font-size: 13px; margin: 0 0 8px; color: #334155; }
+          .soporte-box img { max-width: 90%; max-height: 480px; border-radius: 8px; border: 1px solid #cbd5e1; object-fit: contain; }
+          .footer { font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 10px; margin-top: 30px; text-align: center; }
           @media print {
-            body { padding: 20px; }
+            body { padding: 0; }
+            .soporte-box img { max-height: 420px; }
           }
         </style>
       </head>
       <body>
-        <div class="header">
-          <h1>${DATOS_TITULAR.entidad}</h1>
-          <h2>REPORTE DE VERIFICACIÓN DE IDENTIDAD Y EXPEDIENTE</h2>
-          <div class="badge">ESTADO: ${DATOS_TITULAR.estado}</div>
+
+        <!-- PÁGINA 1: FICHA TÉCNICA Y CUADERNILLOS PDF -->
+        <div class="page">
+          <div class="header">
+            <div>
+              <h1>${DATOS_TITULAR.entidad}</h1>
+              <p>EXPEDIENTE INSTITUCIONAL DE VERIFICACIÓN</p>
+            </div>
+            <div class="badge">${DATOS_TITULAR.estado}</div>
+          </div>
+
+          <div class="carnet-banner">
+            <img src="${origenUrl}fondo-carnet.png" alt="Credencial Oficial">
+          </div>
+
+          <table class="table-info">
+            <tr>
+              <td class="label">Titular Verificado:</td>
+              <td><strong>${DATOS_TITULAR.nombre}</strong></td>
+            </tr>
+            <tr>
+              <td class="label">Identificación Oficial:</td>
+              <td>${DATOS_TITULAR.identificacion}</td>
+            </tr>
+            <tr>
+              <td class="label">Fecha de Emisión del Reporte:</td>
+              <td>${fecha}</td>
+            </tr>
+            <tr>
+              <td class="label">Nivel de Seguridad:</td>
+              <td>Carpeta Virtual Cifrada (PIN institucional)</td>
+            </tr>
+          </table>
+
+          <div class="section-heading">Cuadernillos Legales y Financieros Anexos (PDF)</div>
+          <table class="table-files">
+            <thead>
+              <tr>
+                <th>Documento</th>
+                <th>Nombre del Archivo</th>
+                <th>Acceso Directo</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${cuadernillosPdf}
+            </tbody>
+          </table>
+
+          <div class="footer">
+            🔒 Información institucional verificada. Página 1 de 2.
+          </div>
         </div>
 
-        <table class="info-table">
-          <tr>
-            <td class="label">Titular Verificado:</td>
-            <td><strong>${DATOS_TITULAR.nombre}</strong></td>
-          </tr>
-          <tr>
-            <td class="label">Identificación Oficial:</td>
-            <td>${DATOS_TITULAR.identificacion}</td>
-          </tr>
-          <tr>
-            <td class="label">Fecha de Expedición:</td>
-            <td>${fecha}</td>
-          </tr>
-          <tr>
-            <td class="label">Sistema de Custodia:</td>
-            <td>Carpeta Virtual Segura (PIN Encriptado)</td>
-          </tr>
-        </table>
+        <!-- PÁGINA 2: SOPORTES BIOMÉTRICOS Y FOTOGRÁFICOS -->
+        <div class="page">
+          <div class="header">
+            <div>
+              <h1>ANEXO BIOMÉTRICO Y DE IDENTIDAD</h1>
+              <p>Titular: ${DATOS_TITULAR.nombre} — C.C. ${DATOS_TITULAR.identificacion}</p>
+            </div>
+            <div class="badge">SOPORTES GRÁFICOS</div>
+          </div>
 
-        <h3 style="font-size: 15px; color: #0b2545; border-bottom: 1px solid #d4af37; padding-bottom: 6px;">Soportes Verificados en Expediente:</h3>
-        <ul class="doc-list">
-          ${listaDocs}
-        </ul>
+          <div class="soporte-box">
+            <h4>1. CÉDULA DE CIUDADANÍA OFICIAL</h4>
+            <img src="${origenUrl}cedula.jpg" alt="Cédula de Ciudadanía">
+          </div>
 
-        <div class="footer">
-          🔒 Este documento certifica la existencia y custodia de los soportes registrados en la Carpeta Virtual Oficial.<br>
-          Generado automáticamente por el Portal Seguro Trascendiendo Fronteras.
+          <div class="soporte-box">
+            <h4>2. PASAPORTE OFICIAL VIGENTE</h4>
+            <img src="${origenUrl}pasaporte.jpg" alt="Pasaporte Vigente">
+          </div>
+
+          <div class="footer">
+            🔒 Los soportes mostrados corresponden fielmente a los originales custodiados en el servidor seguro. Página 2 de 2.
+          </div>
         </div>
 
         <script>
-          window.print();
+          window.onload = function() {
+            setTimeout(function() {
+              window.print();
+            }, 600);
+          };
         <\/script>
       </body>
       </html>
     `;
 
     const ventana = window.open('', '_blank');
-    ventana.document.write(contenido);
+    ventana.document.write(reporteHTML);
     ventana.document.close();
   }
 </script>
