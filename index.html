@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proyectos Humanitarios</title>
+  <style>
+    :root {
+      --primary: #059669;
+      --primary-dark: #047857;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      padding: 20px 12px;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Tarjeta Principal */
+    .card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      position: relative;
+    }
+
+    /* Encabezado */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-badge {
+      width: 40px;
+      height: 40px;
+      background: #ecfdf5;
+      color: var(--primary);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .header-titles h1 {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: var(--text-main);
+      text-transform: uppercase;
+    }
+
+    .status-pill {
+      background: #ecfdf5;
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+    /* Perfil del Titular */
+    .profile-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .avatar {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      object-fit: cover;
+      border: 2px solid var(--border);
+    }
+
+    .profile-info h2 {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .profile-info p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    /* Pantalla Bloqueo PIN */
+    .pin-box {
+      text-align: center;
+      padding: 15px 0 5px;
+    }
+
+    .lock-icon {
+      font-size: 34px;
+      margin-bottom: 8px;
+    }
+
+    .pin-box h3 {
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .pin-box p {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .pin-input {
+      width: 170px;
+      padding: 10px;
+      font-size: 22px;
+      letter-spacing: 10px;
+      text-align: center;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .pin-input:focus {
+      border-color: var(--primary);
+    }
+
+    .btn-verify {
+      display: block;
+      width: 100%;
+      margin-top: 14px;
+      padding: 12px;
+      background: var(--text-main);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-verify:active {
+      background: #1e293b;
+    }
+
+    .error-msg {
+      color: #ef4444;
+      font-size: 12px;
+      margin-top: 8px;
+      display: none;
+    }
+
+    /* Lista de Documentos */
+    .docs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .doc-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 15px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text-main);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .doc-btn:hover {
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    .doc-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .doc-icon {
+      font-size: 18px;
+    }
+
+    .doc-arrow {
+      color: var(--text-muted);
+      font-size: 16px;
+    }
+
+    .footer-note {
+      font-size: 11px;
+      text-align: center;
+      color: var(--text-muted);
+      margin-top: 16px;
+      line-height: 1.4;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Modal Visor de Imagen/Documento */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(4px);
+      display: flex;
+      flex-direction: column;
+      z-index: 999;
+      padding: 16px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
+      margin-bottom: 12px;
+    }
+
+    .modal-close {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      font-size: 18px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .modal-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: auto;
+    }
+
+    .modal-body img {
+      max-width: 100%;
+      max-height: 85vh;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="card">
+    
+    <!-- Encabezado Actualizado -->
+    <div class="header">
+      <div class="header-left">
+        <div class="icon-badge">🤝</div>
+        <div class="header-titles">
+          <h1>PROYECTOS HUMANITARIOS</h1>
+        </div>
+      </div>
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        ACTIVO
+      </div>
+    </div>
+
+    <!-- Perfil del Titular (Sin cargo de terreno) -->
+    <div class="profile-section">
+      <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=200&h=200&fit=crop&crop=face" alt="Foto Titular" class="avatar">
+      <div class="profile-info">
+        <h2>ANA MARÍA CASTILLO</h2>
+        <p>C.C. 19717700400</p>
+      </div>
+    </div>
+
+    <!-- Bloque 1: Ingreso de PIN -->
+    <div id="pinView" class="pin-box">
+      <div class="lock-icon">🔒</div>
+      <h3>Acceso Protegido</h3>
+      <p>Ingrese el código PIN para consultar los soportes oficiales.</p>
+      
+      <input type="password" id="pinInput" class="pin-input" maxlength="4" placeholder="••••" inputmode="numeric">
+      <button class="btn-verify" onclick="validarPIN()">Verificar Acceso</button>
+      <div id="errorText" class="error-msg">PIN no válido. Intente de nuevo.</div>
+    </div>
+
+    <!-- Bloque 2: Soportes y Documentación -->
+    <div id="docsView" class="hidden">
+      <div class="docs-list">
+        
+        <button class="doc-btn" onclick="abrirVisor('Cédula de Ciudadanía', 'https://placehold.co/600x400/png?text=Cedula+Ana+Maria+Castillo')">
+          <div class="doc-left">
+            <span class="doc-icon">🪪</span>
+            <span>Cédula de Ciudadanía</span>
+          </div>
+          <span class="doc-arrow">›</span>
+        </button>
+
+        <button class="doc-btn" onclick="abrirVisor('Pasaporte Vigente', 'https://placehold.co/600x800/png?text=Pasaporte+Vigente')">
+          <div class="doc-left">
+            <span class="doc-icon">✈️</span>
+            <span>Pasaporte Oficial</span>
+          </div>
+          <span class="doc-arrow">›</span>
+        </button>
+
+        <button class="doc-btn" onclick="abrirVisor('Acuerdo NDA', 'https://placehold.co/600x850/png?text=Acuerdo+de+Confidencialidad+NDA')">
+          <div class="doc-left">
+            <span class="doc-icon">📜</span>
+            <span>Acuerdo de Confidencialidad (NDA)</span>
+          </div>
+          <span class="doc-arrow">›</span>
+        </button>
+
+        <button class="doc-btn" onclick="abrirVisor('Ficha CIS', 'https://placehold.co/600x850/png?text=Ficha+Normas+CIS')">
+          <div class="doc-left">
+            <span class="doc-icon">🛡️</span>
+            <span>Estándares y Ficha CIS</span>
+          </div>
+          <span class="doc-arrow">›</span>
+        </button>
+
+        <button class="doc-btn" onclick="abrirVisor('Vouchers y Comprobantes', 'https://placehold.co/600x900/png?text=Comprobantes+de+Gastos')">
+          <div class="doc-left">
+            <span class="doc-icon">🧾</span>
+            <span>Vouchers y Viáticos</span>
+          </div>
+          <span class="doc-arrow">›</span>
+        </button>
+
+      </div>
+
+      <div class="footer-note">
+        🔒 Información protegida bajo estrictos estándares de confidencialidad y control interno.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal Visor -->
+<div id="modalVisor" class="modal hidden">
+  <div class="modal-header">
+    <h4 id="modalTitulo" style="font-size: 15px;">Documento</h4>
+    <button class="modal-close" onclick="cerrarVisor()">✕</button>
+  </div>
+  <div class="modal-body">
+    <img id="modalImg" src="" alt="Vista previa soporte">
+  </div>
+</div>
+
+<script>
+  // PIN de seguridad para este carnet
+  const PIN_SISTEMA = "4826";
+
+  function validarPIN() {
+    const input = document.getElementById("pinInput").value;
+    const error = document.getElementById("errorText");
+
+    if (input === PIN_SISTEMA) {
+      document.getElementById("pinView").classList.add("hidden");
+      document.getElementById("docsView").classList.remove("hidden");
+    } else {
+      error.style.display = "block";
+    }
+  }
+
+  function abrirVisor(titulo, urlImagen) {
+    document.getElementById("modalTitulo").innerText = titulo;
+    document.getElementById("modalImg").src = urlImagen;
+    document.getElementById("modalVisor").classList.remove("hidden");
+  }
+
+  function cerrarVisor() {
+    document.getElementById("modalVisor").classList.add("hidden");
+    document.getElementById("modalImg").src = "";
+  }
+</script>
+
+</body>
+</html>
