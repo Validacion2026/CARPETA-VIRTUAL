@@ -1,0 +1,16 @@
+{
+  "name": "Carpeta Virtual Trascendiendo Fronteras",
+  "short_name": "Carpeta Virtual",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#030d1a",
+  "theme_color": "#0a192f",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "./fondo-carnet.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
+    }
+  ]
+}
