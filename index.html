@@ -36,13 +36,13 @@
       gap: 16px;
     }
 
-    /* CREDENCIAL PRINCIPAL CON FONDO */
+    /* CONTENEDOR DE LA TARJETA OFICIAL */
     .carnet-wrapper {
       position: relative;
       width: 100%;
       border-radius: 18px;
       overflow: hidden;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.2);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 15px rgba(212, 175, 55, 0.25);
       border: 1px solid var(--border-gold);
     }
 
@@ -52,16 +52,7 @@
       display: block;
     }
 
-    .carnet-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-
-    /* Recuadro de la foto */
+    /* MARCO PARA LA FOTO DEL TITULAR */
     .foto-marco {
       position: absolute;
       top: 17%;
@@ -79,34 +70,6 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-    }
-
-    /* Campos de texto sobre la credencial */
-    .dato-nombre {
-      position: absolute;
-      top: 48.5%;
-      left: 38%;
-      width: 38%;
-      font-size: 11px;
-      font-weight: 800;
-      color: #0b2545;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      text-transform: uppercase;
-    }
-
-    .dato-identificacion {
-      position: absolute;
-      top: 65.5%;
-      left: 38%;
-      width: 38%;
-      font-size: 11px;
-      font-weight: 800;
-      color: #0b2545;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
     /* PANEL INFERIOR CARPETA VIRTUAL */
@@ -175,7 +138,7 @@
       display: none;
     }
 
-    /* LISTA DE ARCHIVOS */
+    /* SECCIONES DE DOCUMENTOS */
     .section-title {
       font-size: 12px;
       color: var(--gold-light);
@@ -312,40 +275,33 @@
 
 <div class="container">
 
-  <!-- CARNET VISUAL OFICIAL CON FONDO -->
+  <!-- TARJETA OFICIAL CON TU DISEÑO -->
   <div class="carnet-wrapper">
-    <img src="fondo-carnet.png" alt="Credencial Oficial" class="carnet-bg">
-    
-    <div class="carnet-overlay">
-      <div class="foto-marco">
-        <img src="foto.jpg" alt="Foto Rostro">
-      </div>
-      <div class="dato-nombre">ANA MARÍA CASTILLO</div>
-      <div class="dato-identificacion">C.C. 1.088.234.567</div>
-    </div>
+    <!-- Usa exactamente tu imagen subida: fondo-carnet.jpg -->
+    <img src="fondo-carnet.jpg" alt="Credencial Trascendiendo Fronteras" class="carnet-bg">
+      
   </div>
 
-  <!-- PANEL CARPETA VIRTUAL -->
+  <!-- PANEL DE LA CARPETA VIRTUAL -->
   <div class="panel">
     
     <!-- Bloque PIN -->
     <div id="pinView" class="pin-box">
       <h3>📁 CARPETA VIRTUAL</h3>
-      <p>Ingrese el PIN para ver los soportes adjuntos.</p>
+      <p>Ingrese el PIN para ver los soportes oficiales.</p>
       
       <input type="password" id="pinInput" class="pin-input" maxlength="4" placeholder="••••" inputmode="numeric">
       <button class="btn-verify" onclick="validarPIN()">Acceder a Soportes</button>
       <div id="errorText" class="error-msg">PIN incorrecto. Intente de nuevo.</div>
     </div>
 
-    <!-- Lista de Archivos -->
+    <!-- Lista de Soportes -->
     <div id="docsView" class="hidden">
       
-      <!-- SECCIÓN IMÁGENES: CÉDULA Y PASAPORTE -->
+      <!-- IMÁGENES: CÉDULA Y PASAPORTE -->
       <div class="section-title">Documentos de Identidad (Imagen)</div>
       <div class="docs-list">
 
-        <!-- Cédula (Imagen) -->
         <button class="doc-item" onclick="abrirVisor('Cédula de Ciudadanía', 'CEDULA ANA MARIA.jpg')">
           <div class="doc-left">
             <span>🪪</span>
@@ -355,7 +311,6 @@
           <span class="doc-arrow">›</span>
         </button>
 
-        <!-- Pasaporte (Imagen) -->
         <button class="doc-item" onclick="abrirVisor('Pasaporte Vigente', 'PASAPORTE.jpg')">
           <div class="doc-left">
             <span>✈️</span>
@@ -367,21 +322,19 @@
 
       </div>
 
-      <!-- SECCIÓN PDFS: PARTICIPACIONES, NDA, CIS, W8, DDR -->
+      <!-- PDFs: PARTICIPACIONES, NDA, CIS, W8, DDR -->
       <div class="section-title">Expediente Oficial (Archivos PDF)</div>
       <div class="docs-list">
 
-        <!-- Participaciones (PDF) -->
         <a href="participaciones.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
             <span>🏅</span>
-            <span>Participaciones y Acreditaciones</span>
+            <span>Participaciones</span>
             <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
         </a>
 
-        <!-- NDA (PDF) -->
         <a href="NDA ANA MARIA CASTILLO FERNANDEZ.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
             <span>📜</span>
@@ -391,17 +344,15 @@
           <span class="doc-arrow">›</span>
         </a>
 
-        <!-- CIS (PDF) -->
         <a href="CIS ANA MARIA CASTILLO FERNANDEZ.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
-            <span>🛡️</span>
+            <span>🛡️️</span>
             <span>CIS</span>
             <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
         </a>
 
-        <!-- W8 (PDF) -->
         <a href="W8 ANA MARIA CASTILLO FERNANDEZ.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
             <span>📑</span>
@@ -411,11 +362,10 @@
           <span class="doc-arrow">›</span>
         </a>
 
-        <!-- DDR (PDF) -->
         <a href="DDR ANA MARIA CASTILLO FERNÁNDEZ.pdf" target="_blank" class="doc-item">
           <div class="doc-left">
             <span>💼</span>
-            <span>Reporte DDR (Due Diligence)</span>
+            <span>DDR (Due Diligence)</span>
             <span class="badge-tipo badge-pdf">PDF</span>
           </div>
           <span class="doc-arrow">›</span>
@@ -429,7 +379,7 @@
 
 </div>
 
-<!-- Modal para visor de fotos -->
+<!-- Modal Visor de Fotos -->
 <div id="modalVisor" class="modal hidden">
   <div class="modal-header">
     <div id="modalTitulo" class="modal-title">Documento</div>
@@ -473,4 +423,5 @@
 </script>
 
 </body>
-</html>
+</html>   
+      
