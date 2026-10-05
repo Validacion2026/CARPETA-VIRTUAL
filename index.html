@@ -333,7 +333,7 @@
 
         <button class="doc-item" onclick="abrirVisor('Pasaporte Vigente', 'pasaporte.jpg')">
           <div class="doc-left">
-            <span>✈️</span>
+            <span>✈️️</span>
             <span>Pasaporte Oficial</span>
             <span class="badge-tipo badge-img">FOTO</span>
           </div>
@@ -342,7 +342,7 @@
 
       </div>
 
-      <!-- 2. PARTICIPACIONES(PDFs MULTIPÁGINA) -->
+      <!-- 2. PARTICIPACIONES -->
       <div class="section-title" id="secParticipacionesTitulo">Participaciones</div>
       <div class="docs-list">
 
@@ -378,7 +378,7 @@
 
       </div>
 
-      <!-- 3. DOCUMENTOS LEGALES (ARCHIVOS PDF) -->
+      <!-- 3. DOCUMENTOS LEGALES -->
       <div class="section-title">Documentos Legales</div>
       <div class="docs-list">
 
@@ -422,7 +422,7 @@
 
       <!-- BOTÓN PARA GENERAR REPORTE COMPLETO -->
       <button class="btn-reporte" onclick="generarReporte()">
-        <span>📥</span> Descargar Reporte(PDF)
+        <span>📥</span> Descargar Reporte (PDF)
       </button>
 
       <div class="legal-note">
@@ -664,12 +664,19 @@
     }
   }
 
-  // CÓDIGO QUE HACE QUE SE GUARDE EN EL CELULAR SIN INTERNET
+  // REGISTRO DE SERVICE WORKER CON ACTUALIZACIÓN AUTOMÁTICA
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('./sw.js')
-        .then(function() { console.log('Modo offline activo'); })
-        .catch(function(e) { console.log('Error offline', e); });
+      navigator.serviceWorker.register('./sw.js').then(function(reg) {
+        reg.onupdatefound = function() {
+          const installingWorker = reg.installing;
+          installingWorker.onstatechange = function() {
+            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              window.location.reload();
+            }
+          };
+        };
+      }).catch(function(e) { console.log('Error offline', e); });
     });
   }
 </script>
