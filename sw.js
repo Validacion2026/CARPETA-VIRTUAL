@@ -1,4 +1,4 @@
-const CACHE_NAME = 'carpeta-virtual-v3';
+const CACHE_NAME = 'carpeta-virtual-v4';
 
 const ARCHIVOS_OFFLINE = [
   './',
@@ -16,7 +16,9 @@ const ARCHIVOS_OFFLINE = [
   './ddr.pdf'
 ];
 
+// Al instalar, toma el control de inmediato
 self.addEventListener('install', event => {
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       return Promise.all(
@@ -24,10 +26,11 @@ self.addEventListener('install', event => {
           return cache.add(url).catch(err => console.log('Omitido:', url));
         })
       );
-    }).then(() => self.skipWaiting())
+    })
   );
 });
 
+// Al activar, borra cualquier memoria vieja
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys => {
@@ -40,10 +43,21 @@ self.addEventListener('activate', event => {
   );
 });
 
+// NETWORK FIRST:
+// Busca primero lo nuevo en internet. Si hay internet, lo muestra y actualiza la copia.
+// Si no hay señal o está en modo avión, responde desde la memoria offline.
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request).then(cached => {
-      return cached || fetch(event.request);
-    })
+    fetch(event.request)
+      .then(response => {
+        if (response && response.status === 200 && event.request.method === 'GET') {
+          const responseClone = response.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(event.request, responseClone);
+          });
+        }
+        return response;
+      })
+      .catch(() => caches.match(event.request))
   );
 });
